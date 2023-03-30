@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<h1>Listado de Proveedores</h1>
+<table style="border-collapse: collapse;" border="3" cellpadding="28">
+    <thead>
+        <tr>
+            <td>codigo</td>
+            <td>nombre</td>
+            <td>categoria</td>
+            <td>retencion</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="proveedores:${proveedores}">
+            <td th:text="${proveedores.codigo}"></td>
+            <td th:text="${proveedores.nombre}"></td>
+            <td th:text="${proveedores.categoria}"></td>
+            <td th:text="${proveedores.retencion}"></td>
+        </tr>
+    </tbody>
+</table>
+</html>
