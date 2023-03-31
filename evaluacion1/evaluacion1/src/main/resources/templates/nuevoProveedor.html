@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<!--Titulo de la pagina.-->
+<title>Nuevo Proveedor</title>
+
+<!--Encabezado de la pagina.-->
+<h1>Nuevo Proveedor</h1>
+
+<!--Formulario para pedir datos del nuevo proveedor.-->
+<form th:action="@{/nuevo-proveedor}" method="POST">
+
+    <!--Se pide el codigo del nuevo proveedor.-->
+    <label>codigo</label>
+    <input type="text" id="codigo" name="codigo" required
+           placeholder="Ingrese el codigo del proveedor">
+
+    <!--Se pide el nombre del nuevo proveedor.-->
+    <label>nombre</label>
+    <input type="text" id="nombre" name="nombre" required
+           placeholder="Ingrese el nombre del proveedor">
+
+    <!--Se pide la categoria del nuevo proveedor.-->
+    <label>categoria</label>
+    <input type="text" id="categoria" name="categoria" required
+           placeholder="Ingrese la categoria del proveedor">
+
+    <!--Se pide si el proveedor posee retencion o no.-->
+    <label>retencion</label>
+    <input type="text" id="retencion" name="retencion" required
+           placeholder="Ingrese si el proveedor posee retencion o no">
+
+    <!--Boton para registrar al nuevo proveedor.-->
+    <button type="submit">Registrar Proveedor</button>
+</form>
+</html>

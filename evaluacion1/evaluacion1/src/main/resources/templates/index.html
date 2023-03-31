@@ -1,8 +1,16 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
+<!--Titulo de la pagina.-->
+<title>Listado de Proveedores</title>
+
+<!--Encabezado de la pagina.-->
 <h1>Listado de Proveedores</h1>
+
+<!--Tabla que muestra el listado de provedores.-->
 <table style="border-collapse: collapse;" border="3" cellpadding="28">
     <thead>
+        <!--Fila para el encabezado de la tabla.-->
         <tr>
             <td>codigo</td>
             <td>nombre</td>
@@ -11,6 +19,7 @@
         </tr>
     </thead>
     <tbody>
+        <!--Ciclo para agregar filas para cada proveedor en la base de datos.-->
         <tr th:each="proveedores:${proveedores}">
             <td th:text="${proveedores.codigo}"></td>
             <td th:text="${proveedores.nombre}"></td>
@@ -19,4 +28,6 @@
         </tr>
     </tbody>
 </table>
+<!--Parrafo que contiene un link para ingresar un nuevo proveedor.-->
+<p>Para agregar un nuevo proveedor, <a href="/nuevo-proveedor">presione aquí</a>.</p>
 </html>
