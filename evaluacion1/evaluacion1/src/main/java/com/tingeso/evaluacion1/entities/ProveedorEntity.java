@@ -15,11 +15,11 @@ public class ProveedorEntity {
 
     @Id
     @NotNull
-    private String codigo;
+    public String codigo;
 
-    private String nombre;
+    public String nombre;
 
-    private String categoria;
+    public String categoria;
 
-    private String retencion;
+    public String retencion;
 }

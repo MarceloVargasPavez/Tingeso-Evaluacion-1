@@ -15,7 +15,7 @@ public class AcopioLecheEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true, nullable = false)
-    private Long id;
+    private Integer id;
 
     private String fecha;
 
