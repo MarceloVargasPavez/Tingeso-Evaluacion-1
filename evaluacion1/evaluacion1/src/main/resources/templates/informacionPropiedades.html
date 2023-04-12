@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<!--Titulo de la pagina.-->
+<title>Informacion Propiedades de Leche</title>
+
+<!--Encabezado de la pagina.-->
+<h1>Informacion propiedades de leche</h1>
+
+<!--Tabla que muestra datos de propiedades de leche.-->
+<table style="border-collapse: collapse;" border="3" cellpadding="28">
+    <thead>
+    <!--Fila para el encabezado de la tabla.-->
+    <tr>
+        <td>id</td>
+        <td>codigo proveedor</td>
+        <td>porentaje solidos</td>
+        <td>porcentaje grasa</td>
+    </tr>
+    </thead>
+    <tbody>
+    <!--Ciclo para agregar filas para cada proveedor en la base de datos.-->
+    <tr th:each="propiedades:${propiedades}">
+        <td th:text="${propiedades.id}"></td>
+        <td th:text="${propiedades.codigo_proveedor}"></td>
+        <td th:text="${propiedades.porcentaje_solidos}"></td>
+        <td th:text="${propiedades.porcentaje_grasa}"></td>
+    </tr>
+    </tbody>
+
+</table>
+<!--Parrafo que contiene un link para subir nuevo archivo de propiedades.-->
+<p>Para subir un nuevo archivo, <a href="/subirArchivoPorpiedades">presione aquí</a>.</p>
+
+</html>

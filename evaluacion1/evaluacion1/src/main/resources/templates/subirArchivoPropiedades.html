@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<!--Titulo de la pagina.-->
+<title>Subir Archivo Propiedades</title>
+
+<!--Encabezado de la pagina.-->
+<h1>Nuevo Archivo de Propiedades de Leche</h1>
+
+<!--Formulario para ingresar un nuevo archivo.-->
+<form th:action="@{/subirArchivoPropiedades}" method="POST" enctype="multipart/form-data">
+    <br>
+    <input type="file" class="form-control" name="file" accept = ".csv">
+    <br>
+    <input class = "btn btn-primary"
+           type="submit" value="Cargar el archivo a la Base de Datos">
+</form>
+
+<!--Parrafo que contiene un link para ingresar un nuevo proveedor.-->
+<p><a href="/informacionPropiedades">Visualizar datos de propiedades de leche</a>.</p>
+
+</html>

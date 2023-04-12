@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<!--Titulo de la pagina.-->
+<title>Informacion Acopios</title>
+
+<!--Encabezado de la pagina.-->
+<h1>Informacion Acopios</h1>
+
+<!--Tabla que muestra datos de acopios.-->
+<table style="border-collapse: collapse;" border="3" cellpadding="28">
+    <thead>
+    <!--Fila para el encabezado de la tabla.-->
+    <tr>
+        <td>id</td>
+        <td>fecha</td>
+        <td>turno</td>
+        <td>codigo_proveedor</td>
+        <td>kilos_leche</td>
+    </tr>
+    </thead>
+    <tbody>
+    <!--Ciclo para agregar filas para cada proveedor en la base de datos.-->
+    <tr th:each="acopios:${acopios}">
+        <td th:text="${acopios.id}"></td>
+        <td th:text="${acopios.fecha}"></td>
+        <td th:text="${acopios.turno}"></td>
+        <td th:text="${acopios.codigo_proveedor}"></td>
+        <td th:text="${acopios.kilos_leche}"></td>
+    </tr>
+    </tbody>
+
+</table>
+<!--Parrafo que contiene un link para subir nuevo archivo de acopio.-->
+<p>Para subir un nuevo archivo, <a href="/subirArchivoAcopio">presione aquí</a>.</p>
+
+</html>

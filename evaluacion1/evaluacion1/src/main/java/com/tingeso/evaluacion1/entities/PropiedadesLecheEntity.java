@@ -19,7 +19,9 @@ public class PropiedadesLecheEntity {
     @Column(unique = true, nullable = false)
     private Integer id;
 
-    private int porcentaje_solidos;
+    private String codigo_proveedor;
 
-    private int porcentaje_grasa;
+    private Integer porcentaje_solidos;
+
+    private Integer porcentaje_grasa;
 }

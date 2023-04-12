@@ -11,8 +11,4 @@ public class PagoEntity {
     @Id
     @NotNull
     private Long id;
-
-    public ProveedorEntity proveedor;
-
-
 }
