@@ -21,7 +21,7 @@ public class PropiedadesLecheController {
 
     @GetMapping("/subirArchivoPropiedades")
     public String subirArchivoPropiedades(){
-        return "informacionPropiedades";
+        return "subirArchivoPropiedades";
     }
 
     @PostMapping("/subirArchivoPropiedades")
