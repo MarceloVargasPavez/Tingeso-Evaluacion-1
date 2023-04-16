@@ -15,6 +15,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Objects;
 
 @Service
 public class PropiedadesLecheService {
@@ -24,7 +25,7 @@ public class PropiedadesLecheService {
 
     private final Logger logg = LoggerFactory.getLogger(AcopioLecheService.class);
 
-    public ArrayList<PropiedadesLecheEntity> obtenerPropiedadesLeche(){
+    public ArrayList<PropiedadesLecheEntity> obtenerPropiedadesLeche() {
         return (ArrayList<PropiedadesLecheEntity>) propiedadesLecheRepository.findAll();
     }
 
@@ -81,7 +82,7 @@ public class PropiedadesLecheService {
         }
     }
 
-    public void guardarPropiedades(PropiedadesLecheEntity propiedades){
+    public void guardarPropiedades(PropiedadesLecheEntity propiedades) {
         propiedadesLecheRepository.save(propiedades);
     }
 
@@ -91,5 +92,23 @@ public class PropiedadesLecheService {
         nuevasPropiedades.setPorcentaje_solidos(porcentaje_solidos);
         nuevasPropiedades.setPorcentaje_grasa(porcentaje_grasa);
         guardarPropiedades(nuevasPropiedades);
+    }
+
+    /*
+    Descripcion metodo: Metodo que obtiene las propiedades de la leche de la quincena de un Proveedor.
+    Parametros de entrada: codigo del proveedor(String).
+    Retorno: Las propiedades de la leche de ese Proveedor(PropiedadesLecheEntity).
+    */
+    public PropiedadesLecheEntity obtenerPropiedadesProveedor(String codigo_proveedor) {
+        PropiedadesLecheEntity propiedades_proveedor = new PropiedadesLecheEntity();
+        ArrayList<PropiedadesLecheEntity> total_propiedades = new ArrayList<>();
+        total_propiedades = (ArrayList<PropiedadesLecheEntity>) propiedadesLecheRepository.findAll();
+        for (int i = 0; i < total_propiedades.size(); ++i) {
+            if (Objects.equals(total_propiedades.get(i).getCodigo_proveedor(), codigo_proveedor)) {
+                propiedades_proveedor = total_propiedades.get(i);
+                break;
+            }
+        }
+        return propiedades_proveedor;
     }
 }

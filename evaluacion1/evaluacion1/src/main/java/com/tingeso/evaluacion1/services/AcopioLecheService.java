@@ -15,6 +15,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Objects;
 
 @Service
 public class AcopioLecheService {
@@ -96,5 +97,23 @@ public class AcopioLecheService {
 
     public void eliminarAcopios(ArrayList<AcopioLecheEntity> acopios) {
         acopioLecheRepository.deleteAll();
+    }
+
+
+    /*
+    Descripcion metodo: Metodo que obtiene todos los acopios pertenecientes a un Proveedor.
+    Parametros de entrada: codigo del proveedor(String).
+    Retorno: Lista con los acopios pertenecientes a ese Proveedor(ArrayList<AcopioLecheEntity>).
+    */
+    public ArrayList<AcopioLecheEntity> obtenerAcopiosProveedor(String codigo_proveedor) {
+        ArrayList<AcopioLecheEntity> acopios = new ArrayList<>();
+        acopios = (ArrayList<AcopioLecheEntity>) acopioLecheRepository.findAll();
+        ArrayList<AcopioLecheEntity> acopiosProveedor = new ArrayList<>();
+        for (int i = 0; i < acopios.size(); ++i) {
+            if (Objects.equals(acopios.get(i).getCodigo_proveedor(), codigo_proveedor)) {
+                acopiosProveedor.add(acopios.get(i));
+            }
+        }
+        return acopiosProveedor;
     }
 }
