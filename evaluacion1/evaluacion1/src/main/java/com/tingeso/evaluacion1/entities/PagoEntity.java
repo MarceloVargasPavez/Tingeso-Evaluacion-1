@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "Pagos")
@@ -19,7 +20,7 @@ public class PagoEntity {
     @Column(unique = true, nullable = false)
     private Integer id;
 
-    private String quincena;
+    private LocalDate quincena;
 
     private String codigo_proveedor;
 

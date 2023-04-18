@@ -5,12 +5,12 @@ import com.tingeso.evaluacion1.entities.PagoEntity;
 import com.tingeso.evaluacion1.entities.PropiedadesLecheEntity;
 import com.tingeso.evaluacion1.repositories.PagoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Objects;
 
 @Service
 public class PagoService {
@@ -24,16 +24,54 @@ public class PagoService {
     @Autowired
     PropiedadesLecheService propiedadesLecheService;
 
+    /*
+    Descripcion metodo: Metodo que crea un nuevo pago de la quincena actual para un proveedor.
+    Parametros de entrada: Codigo del proveedor(String).
+    Retorno: Nuevo pago(PagoEntity).
+    */
     public PagoEntity calculosPago(String codigo_proveedor) {
         PagoEntity nuevoPago = new PagoEntity();
         //Se obtienen los acopios de la quincena del proveedor.
         ArrayList<AcopioLecheEntity> acopios = new ArrayList<>();
         acopios = acopioLecheService.obtenerAcopiosProveedor(codigo_proveedor);
         //Se obtienen las propiedades de la leche de la quincena del proveedor.
-        PropiedadesLecheEntity propiedades_proveedor=new PropiedadesLecheEntity();
-        propiedades_proveedor=propiedadesLecheService.obtenerPropiedadesProveedor(codigo_proveedor);
+        PropiedadesLecheEntity propiedades_proveedor = new PropiedadesLecheEntity();
+        propiedades_proveedor = propiedadesLecheService.obtenerPropiedadesProveedor(codigo_proveedor);
+        //Se crea un arreglo de fechas de tipo LocalDate y se transforman las de acopios.
+        ArrayList<LocalDate> fechas = transformarfechas(acopios);
+        nuevoPago.setQuincena(establecerQuincena(fechas));
+        PagoEntity quincenaAnterior = obtenerPagoQuincenaAnterior(codigo_proveedor, nuevoPago.getQuincena());
         nuevoPago.setTotal_klsleche(totalKlsLeche(acopios));
+        nuevoPago.setNumero_dias_envio(cantidadDiasEnvio(fechas));
+        nuevoPago.setPromedio_diario_klsleche(promedioDiarioLeche(nuevoPago.getTotal_klsleche(), nuevoPago.getQuincena()));
+        nuevoPago.setPorcentaje_variacion_leche(porcentajeVariacionLeche(nuevoPago.getTotal_klsleche(), quincenaAnterior));
         return nuevoPago;
+    }
+
+    /*
+    Descripcion metodo: Metodo que establece la quincena actual.
+    Parametros de entrada: Fechas(ArrayList<LocalDate>).
+    Retorno: Quincena(LocalDate) o null en caso de que no existan acopios.
+    */
+    public LocalDate establecerQuincena(ArrayList<LocalDate> fechas) {
+        int dia;
+        int mes;
+        int anio;
+        if (fechas != null) {
+            LocalDate primeraFecha = fechas.get(0);
+            if (fechas.get(0).getDayOfMonth() > 15) {
+                dia = primeraFecha.lengthOfMonth();
+            } else {
+                dia = 15;
+            }
+            mes = primeraFecha.getMonthValue();
+            anio = primeraFecha.getYear();
+        }
+        //Caso en el que el arreglo fechas esta vacio.
+        else {
+            return null;
+        }
+        return LocalDate.of(anio, mes, dia);
     }
 
     /*
@@ -51,14 +89,16 @@ public class PagoService {
 
     /*
     Descripcion metodo: Metodo que obtiene la cantidad de dias dentro de la quincena que un proveedor envio leche.
-    Parametros de entrada: Acopios(ArrayList<AcopioLecheEntity>).
+    Parametros de entrada: Fechas(ArrayList<LocalDate>).
     Retorno: Cantidad de dias en los que se realizaron acopios(int).
     */
-    public int cantidadDiasEnvio(ArrayList<AcopioLecheEntity> acopios_proveedor) {
+    public int cantidadDiasEnvio(ArrayList<LocalDate> fechas) {
         int diaActual;
-        ArrayList<Integer> dias=new ArrayList<>();
-        for (AcopioLecheEntity acopioLecheEntity : acopios_proveedor) {
-            diaActual = obtenerDiaFecha(acopioLecheEntity.getFecha());
+        ArrayList<Integer> dias = new ArrayList<>();
+        //Se recorren las fechas en las que se realizaron envios y se agregan a la lista
+        //dias, a menos que el dia se repita.
+        for (LocalDate fecha : fechas) {
+            diaActual = fecha.getDayOfMonth();
             if (!dias.contains(diaActual)) {
                 dias.add(diaActual);
             }
@@ -68,38 +108,227 @@ public class PagoService {
 
     /*
     Descripcion metodo: Metodo que obtiene el promedio diario de kls de leche enviados por un proveedor.
-    Parametros de entrada:
-    Retorno:
+    Parametros de entrada: Total de kls de leche(int) y fechas de acopio(ArrayList<LocalDate>).
+    Retorno: Promedio diario de kls de leche entregados por el proveedor(int).
     */
-    public Integer promedioDiarioLeche() {
-        Integer promedio = 0;
+    public Integer promedioDiarioLeche(int total_Klsleche, LocalDate quincena) {
+        int total_dias;
+        int promedio = 0;
+        if (quincena != null) {
+            if (quincena.getDayOfMonth() > 15) {
+                total_dias = quincena.lengthOfMonth() - 15;
+            } else {
+                total_dias = 15;
+            }
+        } else {
+            return promedio;
+        }
+        promedio = total_Klsleche / total_dias;
         return promedio;
     }
 
     /*
-    Descripcion metodo: Metodo que obtiene el dia de una fecha de tipo String.
-    Parametros de entrada: fecha con formato yyyy/mm/dd(String).
-    Retorno: Dia del mes de la fecha(int).
+    Descripcion metodo: Metodo que transforma cada fecha String de los acopios a tipo LocalDate.
+    Parametros de entrada: Acopios(ArrayList<AcopioLecheEntity>).
+    Retorno: ArrayList con las fechas de tipo LocalDate(ArrayList<LocalDate>).
     */
-    public int obtenerDiaFecha(String fecha){
+    public ArrayList<LocalDate> transformarfechas(ArrayList<AcopioLecheEntity> acopios_proveedor) {
+        ArrayList<LocalDate> fechas = new ArrayList<>();
         // Crear un objeto DateTimeFormatter para analizar la cadena de fecha
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-
-        // Convertir la cadena de fecha en un objeto LocalDate
-        LocalDate localDate = LocalDate.parse(fecha, formato);
-
-        // Obtener el día del objeto LocalDate y devolverlo como un entero
-        return localDate.getDayOfMonth();
+        for (AcopioLecheEntity acopioLecheEntity : acopios_proveedor) {
+            fechas.add(LocalDate.parse(acopioLecheEntity.getFecha(), formato));
+        }
+        return fechas;
     }
 
-    public int obtenerMesFecha(String fecha){
-        // Crear un objeto DateTimeFormatter para analizar la cadena de fecha
-        DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+    /*
+    Descripcion metodo: Metodo para calcular porcentaje de variacion.
+    Parametros de entrada: Valor actual(int) y valor anterior(int).
+    Retorno: Porcentaje de variacion(int).
+    */
+    public int calculoVariacion(int valor_actual, int valor_anterior) {
+        return ((valor_actual - valor_anterior) / valor_anterior) * 100;
+    }
 
-        // Convertir la cadena de fecha en un objeto LocalDate
-        LocalDate localDate = LocalDate.parse(fecha, formato);
+    /*
+    Descripcion metodo: Metodo para calcular porcentaje de variacion de leche.
+    Parametros de entrada: Total de kls de leche(int) y pago anterior del proveedor(PagoEntity).
+    Retorno: Porcentaje de variacion de leche(int).
+    */
+    public int porcentajeVariacionLeche(int total_klsleche, PagoEntity pago_anterior) {
+        int porcentaje_variacion = 0;
+        if (pago_anterior != null) {
+            porcentaje_variacion = calculoVariacion(total_klsleche, pago_anterior.getTotal_klsleche());
+        }
+        return porcentaje_variacion;
+    }
 
-        // Obtener el día del objeto LocalDate y devolverlo como un entero
-        return localDate.getMonthValue();
+    /*
+    Descripcion metodo: Metodo para calcular porcentaje de variacion de grasa.
+    Parametros de entrada: Porcentaje de grasa(int) y pago anterior del proveedor(PagoEntity).
+    Retorno: Porcentaje de variacion de grasa(int).
+    */
+    public int porcentajeVariacionGrasa(int porcentaje_grasa, PagoEntity pago_anterior) {
+        int porcentaje_variacion_grasa = 0;
+        if (pago_anterior != null) {
+            porcentaje_variacion_grasa = calculoVariacion(porcentaje_grasa, pago_anterior.getPorcentaje_grasa());
+        }
+        return porcentaje_variacion_grasa;
+    }
+
+    /*
+    Descripcion metodo: Metodo para calcular porcentaje de variacion de solidos.
+    Parametros de entrada: Porcentaje de solidos(int) y pago anterior del proveedor(PagoEntity).
+    Retorno: Porcentaje de variacion de solidos(int).
+    */
+    public int porcentajeVariacionSolidos(int porcentaje_solidos, PagoEntity pago_anterior) {
+        int porcentaje_variacion_solidos = 0;
+        if (pago_anterior != null) {
+            porcentaje_variacion_solidos = calculoVariacion(porcentaje_solidos, pago_anterior.getPorcentaje_solidos());
+        }
+        return porcentaje_variacion_solidos;
+    }
+
+    /*
+    Descripcion metodo: Metodo que obtiene el pago de la quincena anterior de un proveedor.
+    Parametros de entrada: Codigo del proveedor(String) y quincena actual(LocalDate).
+    Retorno: Pago anterior(PagoEntity).
+    */
+    public PagoEntity obtenerPagoQuincenaAnterior(String codigo_proveedor, LocalDate quincenaActual) {
+        ArrayList<PagoEntity> pagos = new ArrayList<>();
+        pagos = (ArrayList<PagoEntity>) pagoRepository.findAll();
+        PagoEntity pagoAnterior = null;
+        LocalDate quincenaAnterior;
+        //Si es que la quincena corresponde a la segunda del mes la fecha es el mismo anio, mes y el dia es igual a 15.
+        if (quincenaActual.getDayOfMonth() > 15) {
+            quincenaAnterior = LocalDate.of(quincenaActual.getYear(), quincenaActual.getMonth(), 15);
+        }
+        //En caso contrario se debe cambiar el mes e incluso el anio.
+        else {
+            //Si el mes actual es enero se debe cambiar el anio.
+            if (quincenaActual.getMonthValue() == 1) {
+                quincenaAnterior = LocalDate.of(quincenaActual.getYear() - 1, 12, 31);
+            }
+            //Si es otro mes se debe calcular la cantidad de dias del mes anterior.
+            else {
+                //Fecha para calcular la cantidad de dias del mes anterior.
+                LocalDate nuevaFecha = LocalDate.of(quincenaActual.getYear(), quincenaActual.getMonthValue() - 1, 1);
+                int cantidadDiasMes = nuevaFecha.lengthOfMonth();
+                quincenaAnterior = LocalDate.of(quincenaActual.getYear(), quincenaActual.getMonthValue() - 1, cantidadDiasMes);
+            }
+        }
+        if (pagos != null) {
+            for (PagoEntity pago : pagos) {
+                if (Objects.equals(pago.getCodigo_proveedor(), codigo_proveedor) && pago.getQuincena() == quincenaAnterior) {
+                    pagoAnterior = pago;
+                    break;
+                }
+            }
+        } else {
+            return null;
+        }
+        return pagoAnterior;
+    }
+
+    public int porcentajeDescuentoVariacionLeche(int porcentaje_variacion_leche) {
+        int porcentaje_descuento = 0;
+        if (porcentaje_variacion_leche <= -8) {
+            if (porcentaje_variacion_leche <= -9 && porcentaje_variacion_leche >= -25) {
+                porcentaje_descuento = 7;
+            }
+            if (porcentaje_variacion_leche <= -26 && porcentaje_variacion_leche >= -45) {
+                porcentaje_descuento = 15;
+            }
+            if (porcentaje_variacion_leche <= -46) {
+                porcentaje_descuento = 30;
+            }
+        }
+        return porcentaje_descuento;
+    }
+
+    public int porcentajeDescuentoVariacionGrasa(int porcentaje_variacion_grasa) {
+        int porcentaje_descuento = 0;
+        if (porcentaje_variacion_grasa <= -15) {
+            if (porcentaje_variacion_grasa <= -16 && porcentaje_variacion_grasa >= -25) {
+                porcentaje_descuento = 12;
+            }
+            if (porcentaje_variacion_grasa <= -26 && porcentaje_variacion_grasa >= -40) {
+                porcentaje_descuento = 20;
+            }
+            if (porcentaje_variacion_grasa <= -41) {
+                porcentaje_descuento = 30;
+            }
+        }
+        return porcentaje_descuento;
+    }
+
+    public int porcentajeDescuentoVariacionSolidos(int porcentaje_variacion_solidos) {
+        int porcentaje_descuento = 0;
+        if (porcentaje_variacion_solidos <= -6) {
+            if (porcentaje_variacion_solidos <= -7 && porcentaje_variacion_solidos >= -12) {
+                porcentaje_descuento = 18;
+            }
+            if (porcentaje_variacion_solidos <= -13 && porcentaje_variacion_solidos >= -35) {
+                porcentaje_descuento = 27;
+            }
+            if (porcentaje_variacion_solidos <= -36) {
+                porcentaje_descuento = 45;
+            }
+        }
+        return porcentaje_descuento;
+    }
+
+    public int pagoPorLeche(String categoria_proveedor, int total_klsleche) {
+        int total = 0;
+        if (Objects.equals(categoria_proveedor, "A")) {
+            total = 700 * total_klsleche;
+        }
+        if (Objects.equals(categoria_proveedor, "B")) {
+            total = 550 * total_klsleche;
+        }
+        if (Objects.equals(categoria_proveedor, "C")) {
+            total = 400 * total_klsleche;
+        }
+        if (Objects.equals(categoria_proveedor, "D")) {
+            total = 250 * total_klsleche;
+        }
+        return total;
+    }
+
+    public int pagoPorGrasa(int porcentaje_grasa, int total_klsleche) {
+        int total = 0;
+        if (porcentaje_grasa >= 0 && porcentaje_grasa <= 20) {
+            total = 30 * total_klsleche;
+        }
+        if (porcentaje_grasa >= 21 && porcentaje_grasa <= 45) {
+            total = 80 * total_klsleche;
+        }
+        if (porcentaje_grasa >= 46) {
+            total = 120 * total_klsleche;
+        }
+        return total;
+    }
+
+    public int pagoPorSolidos(int porcentaje_solidos, int total_klsleche) {
+        int total = 0;
+        if (porcentaje_solidos >= 0 && porcentaje_solidos <= 7) {
+            total = -130 * total_klsleche;
+        }
+        if (porcentaje_solidos >= 8 && porcentaje_solidos <= 18) {
+            total = -90 * total_klsleche;
+        }
+        if (porcentaje_solidos >= 19 && porcentaje_solidos <= 35) {
+            total = 95 * total_klsleche;
+        }
+        if (porcentaje_solidos >= 36) {
+            total = 150 * total_klsleche;
+        }
+        return total;
+    }
+
+    public int calculoBonificaionFrecuencia(ArrayList<LocalDate> fechas) {
+        int bonificacion = 0;
+        return bonificacion;
     }
 }
