@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<!--Titulo de la pagina.-->
+<title>Listado de Pagos</title>
+
+<!--Encabezado de la pagina.-->
+<h1>Listado de Pagos</h1>
+
+<button type="button" th:action="@{/informacionPagos}" method="POST"
+<!--Tabla que muestra el listado de pagos.-->
+<table style="border-collapse: collapse;" border="1" cellpadding="20">
+    <thead>
+    <!--Fila para el encabezado de la tabla.-->
+    <tr>
+        <td>id</td>
+        <td>quincena</td>
+        <td>codigo proveedor</td>
+        <td>total kls leche</td>
+        <td>numero dias de envio</td>
+        <td>promedio diario kls leche</td>
+        <td>porcentaje variacion leche</td>
+        <td>porcentaje grasa</td>
+        <td>porcentaje variacion grasa</td>
+        <td>porcentaje solidos</td>
+        <td>porcentaje variacion solidos</td>
+        <td>pago leche</td>
+        <td>pago grasa</td>
+        <td>pago solidos</td>
+        <td>bonificacion frecuencia</td>
+        <td>descuento variacion leche</td>
+        <td>descuento variacion grasa</td>
+        <td>descuento variacion solidos</td>
+        <td>pago total</td>
+        <td>monto retencion</td>
+        <td>monto final</td>
+    </tr>
+    </thead>
+    <tbody>
+    <!--Ciclo para agregar filas para cada pago de la base de datos.-->
+    <tr th:each="pagos:${pagos}">
+        <td th:text="${pagos.id}"></td>
+        <td th:text="${pagos.quincena}"></td>
+        <td th:text="${pagos.codigo_proveedor}"></td>
+        <td th:text="${pagos.total_klsleche}"></td>
+        <td th:text="${pagos.getNumero_dias_envio()}"></td>
+        <td th:text="${pagos.promedio_diario_klsleche}"></td>
+        <td th:text="${pagos.porcentaje_variacion_leche}"></td>
+        <td th:text="${pagos.porcentaje_grasa}"></td>
+        <td th:text="${pagos.porcentaje_variacion_grasa}"></td>
+        <td th:text="${pagos.porcentaje_solidos}"></td>
+        <td th:text="${pagos.porcentaje_variacion_st}"></td>
+        <td th:text="${pagos.pago_leche}"></td>
+        <td th:text="${pagos.pago_grasa}"></td>
+        <td th:text="${pagos.pago_solidos}"></td>
+        <td th:text="${pagos.bonificacion_frecuencia}"></td>
+        <td th:text="${pagos.descuento_variacion_klsleche}"></td>
+        <td th:text="${pagos.descuento_variacion_grasa}"></td>
+        <td th:text="${pagos.descuento_variacion_st}"></td>
+        <td th:text="${pagos.pago_total}"></td>
+        <td th:text="${pagos.monto_retencion}"></td>
+        <td th:text="${pagos.monto_final}"></td>
+    </tr>
+    </tbody>
+</table>
+</html>

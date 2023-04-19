@@ -19,7 +19,7 @@
         </tr>
     </thead>
     <tbody>
-        <!--Ciclo para agregar filas para cada proveedor en la base de datos.-->
+        <!--Ciclo para agregar filas para cada proveedor de la base de datos.-->
         <tr th:each="proveedores:${proveedores}">
             <td th:text="${proveedores.codigo}"></td>
             <td th:text="${proveedores.nombre}"></td>

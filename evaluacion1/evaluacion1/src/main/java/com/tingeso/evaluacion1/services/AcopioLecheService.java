@@ -53,7 +53,6 @@ public class AcopioLecheService {
     public void leerCSV(String direccion) {
         String texto = "";
         BufferedReader bf = null;
-
         try {
             bf = new BufferedReader(new FileReader(direccion));
             String temp = "";
@@ -95,7 +94,7 @@ public class AcopioLecheService {
         guardarAcopio(nuevoAcopio);
     }
 
-    public void eliminarAcopios(ArrayList<AcopioLecheEntity> acopios) {
+    public void eliminarAcopios() {
         acopioLecheRepository.deleteAll();
     }
 

@@ -24,8 +24,6 @@ public class PagoEntity {
 
     private String codigo_proveedor;
 
-    private String nombre_proveedor;
-
     private int total_klsleche;
 
     private int numero_dias_envio;
@@ -50,7 +48,7 @@ public class PagoEntity {
 
     private int bonificacion_frecuencia;
 
-    private int decuento_variacion_klsleche;
+    private int descuento_variacion_klsleche;
 
     private int descuento_variacion_grasa;
 

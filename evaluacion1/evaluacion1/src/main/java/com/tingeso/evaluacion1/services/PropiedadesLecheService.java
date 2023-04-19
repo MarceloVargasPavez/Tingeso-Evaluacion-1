@@ -53,7 +53,6 @@ public class PropiedadesLecheService {
     public void leerCSVPropiedades(String direccion) {
         String texto = "";
         BufferedReader bf = null;
-
         try {
             bf = new BufferedReader(new FileReader(direccion));
             String temp = "";
@@ -110,5 +109,9 @@ public class PropiedadesLecheService {
             }
         }
         return propiedades_proveedor;
+    }
+
+    public void eliminarPropiedades(){
+        propiedadesLecheRepository.deleteAll();
     }
 }

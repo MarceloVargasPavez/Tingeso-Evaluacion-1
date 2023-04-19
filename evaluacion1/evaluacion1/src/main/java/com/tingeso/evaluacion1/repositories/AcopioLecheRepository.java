@@ -8,7 +8,5 @@ import java.util.ArrayList;
 
 @Repository
 public interface AcopioLecheRepository extends JpaRepository <AcopioLecheEntity, Integer> {
-
-
 }
 
