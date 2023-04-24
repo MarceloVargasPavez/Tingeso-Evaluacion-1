@@ -41,7 +41,7 @@ public class ProveedorEntity {
     /*
     Variable que represnta si el Proveedor posee o no retencion.
     Variable de tipo String.
-    Valores validos: "Si" y "No"
+    Valores validos: "SI" y "NO"
      */
     public String retencion;
 }
