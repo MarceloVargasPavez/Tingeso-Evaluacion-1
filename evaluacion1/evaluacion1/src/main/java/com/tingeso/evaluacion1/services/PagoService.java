@@ -65,6 +65,8 @@ public class PagoService {
 
         nuevo_pago.setCodigo_proveedor(codigo_proveedor);
 
+        nuevo_pago.setNombre_proveedor(proveedor_actual.getNombre());
+
         //Se obtienen las propiedades de la leche de la quincena del proveedor.
         PropiedadesLecheEntity propiedades_proveedor = new PropiedadesLecheEntity();
         propiedades_proveedor = propiedadesLecheService.obtenerPropiedadesProveedor(codigo_proveedor);
@@ -156,8 +158,8 @@ public class PagoService {
     */
     public int totalKlsLeche(ArrayList<AcopioLecheEntity> acopios_proveedor) {
         int totalKls = 0;
-        for (int i = 0; i < acopios_proveedor.size(); ++i) {
-            totalKls = totalKls + acopios_proveedor.get(i).getKilos_leche();
+        for (AcopioLecheEntity acopioLecheEntity : acopios_proveedor) {
+            totalKls = totalKls + acopioLecheEntity.getKilos_leche();
         }
         return totalKls;
     }
@@ -183,7 +185,7 @@ public class PagoService {
 
     /*
     Descripcion metodo: Metodo que obtiene el promedio diario de kls de leche enviados por un proveedor.
-    Parametros de entrada: Total de kls de leche(float) y fechas de acopio(ArrayList<LocalDate>).
+    Parametros de entrada: Total de kls de leche(float) y fecha(LocalDate).
     Retorno: Promedio diario de kls de leche entregados por el proveedor(float).
     */
     public float promedioDiarioLeche(float total_Klsleche, LocalDate quincena) {
@@ -268,7 +270,7 @@ public class PagoService {
     /*
     Descripcion metodo: Metodo que obtiene el pago de la quincena anterior de un proveedor.
     Parametros de entrada: Codigo del proveedor(String) y quincena actual(LocalDate).
-    Retorno: Pago anterior(PagoEntity).
+    Retorno: Pago anterior(PagoEntity) o null.
     */
     public PagoEntity obtenerPagoQuincenaAnterior(String codigo_proveedor, LocalDate quincena_actual) {
         ArrayList<PagoEntity> pagos = new ArrayList<>();
@@ -312,7 +314,7 @@ public class PagoService {
     /*
     Descripcion metodo: Metodo que obtiene el porcentaje de descuento de variacion de leche.
     Parametros de entrada: Porcentaje de variacion de leche actual(float).
-    Retorno: Porcentaje de descuento de variacion de leche(float).
+    Retorno: Porcentaje de descuento de variacion de leche(int).
     */
     public int porcentajeDescuentoVariacionLeche(float porcentaje_variacion_leche) {
         int porcentaje_descuento = 0;
@@ -333,7 +335,7 @@ public class PagoService {
     /*
     Descripcion metodo: Metodo que obtiene el porcentaje de descuento de variacion de grasa.
     Parametros de entrada: Porcentaje de variacion de grasa actual(float).
-    Retorno: Porcentaje de descuento de variacion de grasa(float).
+    Retorno: Porcentaje de descuento de variacion de grasa(int).
     */
     public int porcentajeDescuentoVariacionGrasa(float porcentaje_variacion_grasa) {
         int porcentaje_descuento = 0;
@@ -354,7 +356,7 @@ public class PagoService {
     /*
     Descripcion metodo: Metodo que obtiene el porcentaje de descuento de variacion de solidos.
     Parametros de entrada: Porcentaje de variacion de solidos actual(float).
-    Retorno: Porcentaje de descuento de variacion de solidos(float).
+    Retorno: Porcentaje de descuento de variacion de solidos(int).
     */
     public int porcentajeDescuentoVariacionSolidos(float porcentaje_variacion_solidos) {
         int porcentaje_descuento = 0;

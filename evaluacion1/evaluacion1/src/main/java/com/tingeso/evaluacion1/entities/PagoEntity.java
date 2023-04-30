@@ -42,6 +42,12 @@ public class PagoEntity {
     private String codigo_proveedor;
 
     /*
+    Variable que representa el nombre del proveedor.
+    Variable de tipo String.
+     */
+    private String nombre_proveedor;
+
+    /*
     Variable que representa el total de kls entregado en el periodo
     de la quincena.
     Variable de tipo int.
