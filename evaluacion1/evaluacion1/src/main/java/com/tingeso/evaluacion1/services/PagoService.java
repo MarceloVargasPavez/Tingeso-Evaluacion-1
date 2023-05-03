@@ -28,6 +28,11 @@ public class PagoService {
     @Autowired
     PropiedadesLecheService propiedadesLecheService;
 
+    /*
+    Descripcion metodo: Metodo que almacena los pagos de cada proveedor en la base de datos.
+    Parametros de entrada: Vacio.
+    Retorno: Vacio.
+    */
     public void guardarPagos() {
         ArrayList<ProveedorEntity> proveedores = proveedorService.obtenerProveedores();
         PagoEntity pago;
@@ -41,6 +46,11 @@ public class PagoService {
         propiedadesLecheService.eliminarPropiedades();
     }
 
+    /*
+    Descripcion metodo: Metodo que obtiene los pagos almacenados en la base de datos.
+    Parametros de entrada: Vacio.
+    Retorno: Pagos(ArrayList<PagoEntity>).
+    */
     public ArrayList<PagoEntity> obtenerPagos() {
         return (ArrayList<PagoEntity>) pagoRepository.findAll();
     }
@@ -51,6 +61,7 @@ public class PagoService {
     Retorno: Nuevo pago(PagoEntity).
     */
     public PagoEntity crearPago(String codigo_proveedor) {
+
         PagoEntity nuevo_pago = new PagoEntity();
 
         ProveedorEntity proveedor_actual = proveedorService.obtenerPorCodigo(codigo_proveedor);

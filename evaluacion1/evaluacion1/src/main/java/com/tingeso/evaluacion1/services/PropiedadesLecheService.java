@@ -26,10 +26,20 @@ public class PropiedadesLecheService {
 
     private final Logger logg = LoggerFactory.getLogger(AcopioLecheService.class);
 
+    /*
+    Descripcion metodo: Metodo que guarda una propiedad de leche en la base de datos.
+    Parametros de entrada: Propiedades(PropiedadesLecheEntity).
+    Retorno: Propiedades(PropiedadesLecheEntity).
+    */
     public PropiedadesLecheEntity guardarPropiedades(PropiedadesLecheEntity propiedades) {
         return propiedadesLecheRepository.save(propiedades);
     }
 
+    /*
+    Descripcion metodo: Metodo que crea una propiedad de leche y la guarda en la base de datos.
+    Parametros de entrada: Codigo del proveedor(String), porcentaje de solidos(Integer) y porcentaje de grasa(Integer).
+    Retorno: Propiedades(PropiedadesLecheEntity).
+    */
     public PropiedadesLecheEntity guardarPropiedadesLecheBD(String codigo_proveedor, Integer porcentaje_solidos, Integer porcentaje_grasa) {
         PropiedadesLecheEntity nuevasPropiedades = new PropiedadesLecheEntity();
         nuevasPropiedades.setCodigo_proveedor(codigo_proveedor);
@@ -38,6 +48,11 @@ public class PropiedadesLecheService {
         return guardarPropiedades(nuevasPropiedades);
     }
 
+    /*
+    Descripcion metodo: Metodo que obtiene todas las propiedades de la base de datos.
+    Parametros de entrada: Vacio.
+    Retorno: Lista con las propiedades encontradas(ArrayList<PropiedadesLecheEntity>)
+    */
     public ArrayList<PropiedadesLecheEntity> obtenerPropiedadesLeche() {
         return (ArrayList<PropiedadesLecheEntity>) propiedadesLecheRepository.findAll();
     }
@@ -60,10 +75,20 @@ public class PropiedadesLecheService {
         return propiedades_proveedor;
     }
 
+    /*
+    Descripcion metodo: Metodo que elimina todos las propiedades almacenados en la base de datos.
+    Parametros de entrada: Vacio.
+    Retorno: Vacio.
+    */
     public void eliminarPropiedades(){
         propiedadesLecheRepository.deleteAll();
     }
 
+    /*
+    Descripcion metodo: Metodo que guarda un archivo.
+    Parametros de entrada: Archivo(MultipartFile).
+    Retorno: Mensaje de comprobacion(String).
+    */
     @Generated
     public String guardarArchivoPropiedades(MultipartFile file) {
         String filename = file.getOriginalFilename();
@@ -86,6 +111,11 @@ public class PropiedadesLecheService {
         }
     }
 
+    /*
+    Descripcion metodo: Metodo que lee archivo CSV, guardando las propiedades en la base de datos.
+    Parametros de entrada: Direccion(String).
+    Retorno: Vacio.
+    */
     @Generated
     public void leerCSVPropiedades(String direccion) {
         String texto = "";
