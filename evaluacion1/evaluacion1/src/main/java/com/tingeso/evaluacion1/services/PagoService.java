@@ -36,14 +36,26 @@ public class PagoService {
     public void guardarPagos() {
         ArrayList<ProveedorEntity> proveedores = proveedorService.obtenerProveedores();
         PagoEntity pago;
-        for (int i = 0; i < proveedores.size(); ++i) {
-            pago = crearPago(proveedores.get(i).getCodigo());
-            if (pago != null) {
-                pagoRepository.save(pago);
+        int dia_actual = LocalDate.now().getDayOfMonth();
+        if (dia_actual == 15 || dia_actual == LocalDate.now().lengthOfMonth()) {
+            for (int i = 0; i < proveedores.size(); ++i) {
+                pago = crearPago(proveedores.get(i).getCodigo());
+                if (pago != null) {
+                    guardarPago(pago);
+                }
             }
         }
         acopioLecheService.eliminarAcopios();
         propiedadesLecheService.eliminarPropiedades();
+    }
+
+    /*
+    Descripcion metodo: Metodo que almacena un pago en la base de datos.
+    Parametros de entrada: Pago(PagoEntity).
+    Retorno: Pago(PagoEntity).
+    */
+    public PagoEntity guardarPago(PagoEntity pago){
+        return pagoRepository.save(pago);
     }
 
     /*
@@ -130,7 +142,7 @@ public class PagoService {
             nuevo_pago.setMonto_retencion(0);
         }
 
-        int pago_final=(int) pagoFinal(nuevo_pago.getPago_total(), nuevo_pago.getMonto_retencion());
+        int pago_final = (int) pagoFinal(nuevo_pago.getPago_total(), nuevo_pago.getMonto_retencion());
         nuevo_pago.setMonto_final(pago_final);
 
         return nuevo_pago;
@@ -521,7 +533,6 @@ public class PagoService {
         return bonificacion;
     }
 
-
     /*
     Descripcion metodo: Metodo que obtiene el pago por acopio.
     Parametros de entrada: Pago por leche(int), pago por grasa(int),
@@ -550,7 +561,7 @@ public class PagoService {
     Retorno: Pago Total(float).
     */
     public float pagoTotal(float pago_acopio_leche, float descuentos) {
-        return pago_acopio_leche - descuentos;
+        return pago_acopio_leche + descuentos;
     }
 
     /*

@@ -55,12 +55,12 @@ class AcopioLecheTests {
 
     @Test
     void test1ObtenerAcopiosProveedor() {
-        AcopioLecheEntity acopioPrueba = new AcopioLecheEntity(1, "2023/04/13", "M", "9999", 40);
-        AcopioLecheEntity acopioPrueba1 = new AcopioLecheEntity(2, "2023/04/13", "M", "9999", 40);
-        AcopioLecheEntity acopioPrueba2 = new AcopioLecheEntity(3, "2023/04/13", "M", "9999", 40);
-        AcopioLecheEntity acopioPrueba3 = new AcopioLecheEntity(4, "2023/04/13", "M", "9998", 40);
-        AcopioLecheEntity acopioPrueba4 = new AcopioLecheEntity(5, "2023/04/13", "M", "9999", 40);
-        AcopioLecheEntity acopioPrueba5 = new AcopioLecheEntity(6, "2023/04/13", "M", "9998", 40);
+        AcopioLecheEntity acopioPrueba = new AcopioLecheEntity(1, "2023/04/13", "M", "99999", 40);
+        AcopioLecheEntity acopioPrueba1 = new AcopioLecheEntity(2, "2023/04/13", "M", "99999", 40);
+        AcopioLecheEntity acopioPrueba2 = new AcopioLecheEntity(3, "2023/04/13", "M", "99999", 40);
+        AcopioLecheEntity acopioPrueba3 = new AcopioLecheEntity(4, "2023/04/13", "M", "99998", 40);
+        AcopioLecheEntity acopioPrueba4 = new AcopioLecheEntity(5, "2023/04/13", "M", "99999", 40);
+        AcopioLecheEntity acopioPrueba5 = new AcopioLecheEntity(6, "2023/04/13", "M", "99998", 40);
         acopioLecheService.guardarAcopio(acopioPrueba);
         acopioLecheService.guardarAcopio(acopioPrueba1);
         acopioLecheService.guardarAcopio(acopioPrueba2);
@@ -72,7 +72,7 @@ class AcopioLecheTests {
         acopiosProvedor9999.add(acopioPrueba1);
         acopiosProvedor9999.add(acopioPrueba2);
         acopiosProvedor9999.add(acopioPrueba4);
-        ArrayList<AcopioLecheEntity> acopiosProveedor=acopioLecheService.obtenerAcopiosProveedor("9999");
+        ArrayList<AcopioLecheEntity> acopiosProveedor=acopioLecheService.obtenerAcopiosProveedor("99999");
         assertEquals(acopiosProvedor9999,acopiosProveedor);
     }
 }
