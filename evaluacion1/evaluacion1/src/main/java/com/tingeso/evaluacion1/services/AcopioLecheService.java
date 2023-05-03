@@ -2,6 +2,7 @@ package com.tingeso.evaluacion1.services;
 
 import com.tingeso.evaluacion1.entities.AcopioLecheEntity;
 import com.tingeso.evaluacion1.repositories.AcopioLecheRepository;
+import lombok.Generated;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,7 @@ public class AcopioLecheService {
         return (ArrayList<AcopioLecheEntity>) acopioLecheRepository.findAll();
     }
 
+    @Generated
     public String guardar(MultipartFile file) {
         String filename = file.getOriginalFilename();
         if (filename != null) {
@@ -50,6 +52,7 @@ public class AcopioLecheService {
         }
     }
 
+    @Generated
     public void leerCSV(String direccion) {
         String texto = "";
         BufferedReader bf = null;
@@ -85,13 +88,13 @@ public class AcopioLecheService {
         return acopioLecheRepository.save(acopio);
     }
 
-    public void guardarAcopioBD(String fecha, String turno, String codigo_proveedor, Integer kilos_leche) {
+    public AcopioLecheEntity guardarAcopioBD(String fecha, String turno, String codigo_proveedor, Integer kilos_leche) {
         AcopioLecheEntity nuevoAcopio = new AcopioLecheEntity();
         nuevoAcopio.setFecha(fecha);
         nuevoAcopio.setTurno(turno);
         nuevoAcopio.setCodigo_proveedor(codigo_proveedor);
         nuevoAcopio.setKilos_leche(kilos_leche);
-        guardarAcopio(nuevoAcopio);
+        return guardarAcopio(nuevoAcopio);
     }
 
     public void eliminarAcopios() {
@@ -105,7 +108,7 @@ public class AcopioLecheService {
     Retorno: Lista con los acopios pertenecientes a ese Proveedor(ArrayList<AcopioLecheEntity>).
     */
     public ArrayList<AcopioLecheEntity> obtenerAcopiosProveedor(String codigo_proveedor) {
-        ArrayList<AcopioLecheEntity> acopios = new ArrayList<>();
+        ArrayList<AcopioLecheEntity> acopios;
         acopios = (ArrayList<AcopioLecheEntity>) acopioLecheRepository.findAll();
         ArrayList<AcopioLecheEntity> acopiosProveedor = new ArrayList<>();
         for (int i = 0; i < acopios.size(); ++i) {

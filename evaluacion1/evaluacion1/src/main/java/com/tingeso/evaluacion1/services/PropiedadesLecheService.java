@@ -2,6 +2,7 @@ package com.tingeso.evaluacion1.services;
 
 import com.tingeso.evaluacion1.entities.PropiedadesLecheEntity;
 import com.tingeso.evaluacion1.repositories.PropiedadesLecheRepository;
+import lombok.Generated;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +26,45 @@ public class PropiedadesLecheService {
 
     private final Logger logg = LoggerFactory.getLogger(AcopioLecheService.class);
 
+    public PropiedadesLecheEntity guardarPropiedades(PropiedadesLecheEntity propiedades) {
+        return propiedadesLecheRepository.save(propiedades);
+    }
+
+    public PropiedadesLecheEntity guardarPropiedadesLecheBD(String codigo_proveedor, Integer porcentaje_solidos, Integer porcentaje_grasa) {
+        PropiedadesLecheEntity nuevasPropiedades = new PropiedadesLecheEntity();
+        nuevasPropiedades.setCodigo_proveedor(codigo_proveedor);
+        nuevasPropiedades.setPorcentaje_solidos(porcentaje_solidos);
+        nuevasPropiedades.setPorcentaje_grasa(porcentaje_grasa);
+        return guardarPropiedades(nuevasPropiedades);
+    }
+
     public ArrayList<PropiedadesLecheEntity> obtenerPropiedadesLeche() {
         return (ArrayList<PropiedadesLecheEntity>) propiedadesLecheRepository.findAll();
     }
 
+    /*
+    Descripcion metodo: Metodo que obtiene las propiedades de la leche de la quincena de un Proveedor.
+    Parametros de entrada: codigo del proveedor(String).
+    Retorno: Las propiedades de la leche de ese Proveedor(PropiedadesLecheEntity).
+    */
+    public PropiedadesLecheEntity obtenerPropiedadesProveedor(String codigo_proveedor) {
+        PropiedadesLecheEntity propiedades_proveedor = new PropiedadesLecheEntity();
+        ArrayList<PropiedadesLecheEntity> total_propiedades = new ArrayList<>();
+        total_propiedades = (ArrayList<PropiedadesLecheEntity>) propiedadesLecheRepository.findAll();
+        for (PropiedadesLecheEntity totalPropiedade : total_propiedades) {
+            if (Objects.equals(totalPropiedade.getCodigo_proveedor(), codigo_proveedor)) {
+                propiedades_proveedor = totalPropiedade;
+                break;
+            }
+        }
+        return propiedades_proveedor;
+    }
+
+    public void eliminarPropiedades(){
+        propiedadesLecheRepository.deleteAll();
+    }
+
+    @Generated
     public String guardarArchivoPropiedades(MultipartFile file) {
         String filename = file.getOriginalFilename();
         if (filename != null) {
@@ -50,6 +86,7 @@ public class PropiedadesLecheService {
         }
     }
 
+    @Generated
     public void leerCSVPropiedades(String direccion) {
         String texto = "";
         BufferedReader bf = null;
@@ -79,39 +116,5 @@ public class PropiedadesLecheService {
                 }
             }
         }
-    }
-
-    public void guardarPropiedades(PropiedadesLecheEntity propiedades) {
-        propiedadesLecheRepository.save(propiedades);
-    }
-
-    public void guardarPropiedadesLecheBD(String codigo_proveedor, Integer porcentaje_solidos, Integer porcentaje_grasa) {
-        PropiedadesLecheEntity nuevasPropiedades = new PropiedadesLecheEntity();
-        nuevasPropiedades.setCodigo_proveedor(codigo_proveedor);
-        nuevasPropiedades.setPorcentaje_solidos(porcentaje_solidos);
-        nuevasPropiedades.setPorcentaje_grasa(porcentaje_grasa);
-        guardarPropiedades(nuevasPropiedades);
-    }
-
-    /*
-    Descripcion metodo: Metodo que obtiene las propiedades de la leche de la quincena de un Proveedor.
-    Parametros de entrada: codigo del proveedor(String).
-    Retorno: Las propiedades de la leche de ese Proveedor(PropiedadesLecheEntity).
-    */
-    public PropiedadesLecheEntity obtenerPropiedadesProveedor(String codigo_proveedor) {
-        PropiedadesLecheEntity propiedades_proveedor = new PropiedadesLecheEntity();
-        ArrayList<PropiedadesLecheEntity> total_propiedades = new ArrayList<>();
-        total_propiedades = (ArrayList<PropiedadesLecheEntity>) propiedadesLecheRepository.findAll();
-        for (int i = 0; i < total_propiedades.size(); ++i) {
-            if (Objects.equals(total_propiedades.get(i).getCodigo_proveedor(), codigo_proveedor)) {
-                propiedades_proveedor = total_propiedades.get(i);
-                break;
-            }
-        }
-        return propiedades_proveedor;
-    }
-
-    public void eliminarPropiedades(){
-        propiedadesLecheRepository.deleteAll();
     }
 }

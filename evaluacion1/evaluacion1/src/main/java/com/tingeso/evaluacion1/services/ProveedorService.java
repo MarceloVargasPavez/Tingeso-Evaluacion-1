@@ -6,17 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Optional;
 
 @Service
 public class ProveedorService {
 
     @Autowired
     ProveedorRepository proveedorRepository;
-
-    public ArrayList<ProveedorEntity> obtenerProveedores() {
-        return (ArrayList<ProveedorEntity>) proveedorRepository.findAll();
-    }
 
     public ProveedorEntity guardarProveedor(String codigo, String nombre, String categoria, String retencion) {
         ProveedorEntity proveedor= new ProveedorEntity();
@@ -27,8 +22,16 @@ public class ProveedorService {
         return proveedorRepository.save(proveedor);
     }
 
+    public ArrayList<ProveedorEntity> obtenerProveedores() {
+        return (ArrayList<ProveedorEntity>) proveedorRepository.findAll();
+    }
+
     public ProveedorEntity obtenerPorCodigo(String codigo) {
         return proveedorRepository.findByCodigo(codigo);
     }
 
+
+    public void eliminarProveedorPorCodigo(String codigo){
+        proveedorRepository.deleteById(codigo);
+    }
 }

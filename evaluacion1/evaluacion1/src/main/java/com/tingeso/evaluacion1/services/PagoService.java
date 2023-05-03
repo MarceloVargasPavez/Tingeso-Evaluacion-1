@@ -53,7 +53,7 @@ public class PagoService {
     public PagoEntity crearPago(String codigo_proveedor) {
         PagoEntity nuevo_pago = new PagoEntity();
 
-        ProveedorEntity proveedor_actual = proveedorService.proveedorRepository.findByCodigo(codigo_proveedor);
+        ProveedorEntity proveedor_actual = proveedorService.obtenerPorCodigo(codigo_proveedor);
 
         //Se obtienen los acopios de la quincena del proveedor.
         ArrayList<AcopioLecheEntity> acopios = new ArrayList<>();
