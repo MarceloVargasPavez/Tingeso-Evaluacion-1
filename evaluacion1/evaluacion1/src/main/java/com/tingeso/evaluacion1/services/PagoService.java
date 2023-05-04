@@ -54,7 +54,7 @@ public class PagoService {
     Parametros de entrada: Pago(PagoEntity).
     Retorno: Pago(PagoEntity).
     */
-    public PagoEntity guardarPago(PagoEntity pago){
+    public PagoEntity guardarPago(PagoEntity pago) {
         return pagoRepository.save(pago);
     }
 
@@ -157,7 +157,7 @@ public class PagoService {
         int dia;
         int mes;
         int anio;
-        if (fechas.get(0) != null) {
+        if (fechas.size() > 0) {
             LocalDate primeraFecha = fechas.get(0);
             if (fechas.get(0).getDayOfMonth() > 15) {
                 dia = primeraFecha.lengthOfMonth();

@@ -8,7 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class ProveedorTests {
@@ -24,18 +24,18 @@ class ProveedorTests {
         String retencion = "SI";
         ProveedorEntity proveedorPrueba = new ProveedorEntity(codigo, nombre, categoria, retencion);
         ProveedorEntity proveedor1 = proveedorService.guardarProveedor(codigo, nombre, categoria, retencion);
-        assertEquals(proveedorPrueba, proveedor1);
+        assertEquals(proveedorPrueba.getCodigo(), proveedor1.getCodigo());
+        assertEquals(proveedorPrueba.getNombre(), proveedor1.getNombre());
+        assertEquals(proveedorPrueba.getCategoria(), proveedor1.getCategoria());
+        assertEquals(proveedorPrueba.getRetencion(), proveedor1.getRetencion());
     }
 
     @Test
     void test1ObtenerProveedores() {
-        ArrayList<ProveedorEntity> listaProveedores = new ArrayList<>();
-        ProveedorEntity proveedorPrueba = new ProveedorEntity("99999", "Juan", "A", "SI");
-        listaProveedores.add(proveedorPrueba);
-        proveedorService.guardarProveedor(proveedorPrueba.getCodigo(), proveedorPrueba.getNombre(),
-                proveedorPrueba.getCategoria(), proveedorPrueba.getRetencion());
-        ArrayList<ProveedorEntity> listaProveedores1 = proveedorService.obtenerProveedores();
-        assertEquals(listaProveedores, listaProveedores1);
+        ProveedorEntity proveedorPrueba=proveedorService.guardarProveedor("99999", "Juan",
+                "A", "SI");
+        ArrayList<ProveedorEntity> listaProveedores = proveedorService.obtenerProveedores();
+        assertTrue(listaProveedores.contains(proveedorPrueba));
     }
 
     @Test
@@ -47,10 +47,13 @@ class ProveedorTests {
 
     @Test
     void test1EliminarProveedorPorCodigo() {
-
-        proveedorService.guardarProveedor("99999", "Juan", "A", "SI");
-        System.out.println(proveedorService.obtenerPorCodigo("99999"));
-        proveedorService.eliminarProveedorPorCodigo("99999");
-        System.out.println(proveedorService.obtenerPorCodigo("99999"));
+        String codigo = "99999";
+        proveedorService.guardarProveedor(codigo, "Juan", "A", "SI");
+        ProveedorEntity proveedorAntes = proveedorService.obtenerPorCodigo(codigo);
+        assertNotNull(proveedorAntes); //verifica que el proveedor existe antes de eliminarlo
+        proveedorService.eliminarProveedorPorCodigo(codigo);
+        ProveedorEntity proveedorDespues = proveedorService.obtenerPorCodigo(codigo);
+        assertNull(proveedorDespues); //verifica que el proveedor ya no existe después de eliminarlo
     }
+
 }

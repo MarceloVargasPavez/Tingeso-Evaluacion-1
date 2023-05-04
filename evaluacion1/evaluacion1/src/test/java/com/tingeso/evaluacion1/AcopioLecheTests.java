@@ -8,7 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class AcopioLecheTests {
@@ -22,57 +22,57 @@ class AcopioLecheTests {
         String turno = "M";
         String codigo_proveedor = "9999";
         Integer kls_leche = 40;
-        AcopioLecheEntity acopioPrueba = new AcopioLecheEntity(1, fecha, turno, codigo_proveedor, kls_leche);
+        AcopioLecheEntity acopioPrueba = new AcopioLecheEntity(null, fecha, turno, codigo_proveedor, kls_leche);
         AcopioLecheEntity acopio = acopioLecheService.guardarAcopioBD(fecha, turno, codigo_proveedor, kls_leche);
-        assertEquals(acopioPrueba, acopio);
+        assertEquals(acopioPrueba.getFecha(), acopio.getFecha());
+        assertEquals(acopioPrueba.getTurno(), acopio.getTurno());
+        assertEquals(acopioPrueba.getCodigo_proveedor(), acopio.getCodigo_proveedor());
+        assertEquals(acopioPrueba.getKilos_leche(), acopio.getKilos_leche());
     }
 
     @Test
     void test1GuardarAcopio() {
         AcopioLecheEntity acopioPrueba = new AcopioLecheEntity(1, "2023/04/13", "M", "9999", 40);
         AcopioLecheEntity acopio = acopioLecheService.guardarAcopio(acopioPrueba);
-        assertEquals(acopioPrueba, acopio);
+        assertEquals(acopioPrueba.getFecha(), acopio.getFecha());
+        assertEquals(acopioPrueba.getTurno(), acopio.getTurno());
+        assertEquals(acopioPrueba.getCodigo_proveedor(), acopio.getCodigo_proveedor());
+        assertEquals(acopioPrueba.getKilos_leche(), acopio.getKilos_leche());
     }
 
     @Test
     void test1ObtenerAcopiosLeche() {
-        AcopioLecheEntity acopioPrueba = new AcopioLecheEntity(1, "2023/04/13", "M", "9999", 40);
-        acopioLecheService.guardarAcopio(acopioPrueba);
-        ArrayList<AcopioLecheEntity> acopios = new ArrayList<>();
-        acopios.add(acopioPrueba);
-        ArrayList<AcopioLecheEntity> acopios1 = acopioLecheService.obtenerAcopiosLeche();
-        assertEquals(acopios, acopios1);
+        AcopioLecheEntity acopioPrueba = acopioLecheService.guardarAcopioBD("2023/04/13", "M", "9999", 40);
+        ArrayList<AcopioLecheEntity> acopios = acopioLecheService.obtenerAcopiosLeche();
+        assertTrue(acopios.contains(acopioPrueba));
     }
 
     @Test
     void test1EliminarAcopios() {
-        AcopioLecheEntity acopioPrueba = new AcopioLecheEntity(1, "2023/04/13", "M", "9999", 40);
+        AcopioLecheEntity acopioPrueba = new AcopioLecheEntity(99999, "2023/04/13", "M", "9999", 40);
         acopioLecheService.guardarAcopio(acopioPrueba);
-        System.out.println(acopioLecheService.obtenerAcopiosLeche());
         acopioLecheService.eliminarAcopios();
-        System.out.println(acopioLecheService.obtenerAcopiosLeche());
+        ArrayList<AcopioLecheEntity> acopios = acopioLecheService.obtenerAcopiosLeche();
+        assertTrue(acopios.isEmpty());
     }
 
     @Test
     void test1ObtenerAcopiosProveedor() {
-        AcopioLecheEntity acopioPrueba = new AcopioLecheEntity(1, "2023/04/13", "M", "99999", 40);
-        AcopioLecheEntity acopioPrueba1 = new AcopioLecheEntity(2, "2023/04/13", "M", "99999", 40);
-        AcopioLecheEntity acopioPrueba2 = new AcopioLecheEntity(3, "2023/04/13", "M", "99999", 40);
-        AcopioLecheEntity acopioPrueba3 = new AcopioLecheEntity(4, "2023/04/13", "M", "99998", 40);
-        AcopioLecheEntity acopioPrueba4 = new AcopioLecheEntity(5, "2023/04/13", "M", "99999", 40);
-        AcopioLecheEntity acopioPrueba5 = new AcopioLecheEntity(6, "2023/04/13", "M", "99998", 40);
-        acopioLecheService.guardarAcopio(acopioPrueba);
-        acopioLecheService.guardarAcopio(acopioPrueba1);
-        acopioLecheService.guardarAcopio(acopioPrueba2);
-        acopioLecheService.guardarAcopio(acopioPrueba3);
-        acopioLecheService.guardarAcopio(acopioPrueba4);
-        acopioLecheService.guardarAcopio(acopioPrueba5);
-        ArrayList<AcopioLecheEntity> acopiosProvedor9999=new ArrayList<>();
-        acopiosProvedor9999.add(acopioPrueba);
-        acopiosProvedor9999.add(acopioPrueba1);
-        acopiosProvedor9999.add(acopioPrueba2);
-        acopiosProvedor9999.add(acopioPrueba4);
-        ArrayList<AcopioLecheEntity> acopiosProveedor=acopioLecheService.obtenerAcopiosProveedor("99999");
-        assertEquals(acopiosProvedor9999,acopiosProveedor);
+        acopioLecheService.eliminarAcopios();
+        // Crear acopios para diferentes proveedores
+        acopioLecheService.guardarAcopioBD("2023/04/13", "M", "99999", 40);
+        acopioLecheService.guardarAcopioBD("2023/04/13", "M", "99999", 40);
+        acopioLecheService.guardarAcopioBD("2023/04/13", "M", "99999", 40);
+        acopioLecheService.guardarAcopioBD("2023/04/13", "M", "99998", 40);
+        acopioLecheService.guardarAcopioBD("2023/04/13", "M", "99999", 40);
+        acopioLecheService.guardarAcopioBD("2023/04/13", "M", "99998", 40);
+        // Obtener acopios del proveedor 99999
+        ArrayList<AcopioLecheEntity> acopiosProvedor9999 = acopioLecheService.obtenerAcopiosProveedor("99999");
+        // Verificar que los acopios obtenidos corresponden al proveedor 99999
+        for (AcopioLecheEntity acopio : acopiosProvedor9999) {
+            assertEquals("99999", acopio.getCodigo_proveedor());
+        }
+        // Verificar que se obtienen todos los acopios del proveedor 99999
+        assertEquals(4, acopiosProvedor9999.size());
     }
 }
