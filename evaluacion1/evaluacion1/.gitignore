@@ -34,3 +34,5 @@ build/
 
 ### Docker ###
 /data
+
+/sonarqube-10.0.0.68432
