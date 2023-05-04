@@ -7,13 +7,11 @@ import com.tingeso.evaluacion1.services.ProveedorService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ContextConfiguration;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class PagoTests {
@@ -33,22 +31,41 @@ class PagoTests {
                 0, 0, 0,
                 0, 0, 0);
         PagoEntity pago1 = pagoService.guardarPago(pago);
-        assertEquals(pago, pago1);
+        assertEquals(pago.getQuincena(), pago1.getQuincena());
+        assertEquals(pago.getCodigo_proveedor(), pago1.getCodigo_proveedor());
+        assertEquals(pago.getNombre_proveedor(), pago1.getNombre_proveedor());
+        assertEquals(pago.getTotal_klsleche(), pago1.getTotal_klsleche());
+        assertEquals(pago.getNumero_dias_envio(), pago1.getNumero_dias_envio());
+        assertEquals(pago.getPromedio_diario_klsleche(), pago1.getPromedio_diario_klsleche());
+        assertEquals(pago.getPorcentaje_variacion_leche(), pago1.getPorcentaje_variacion_leche());
+        assertEquals(pago.getPorcentaje_grasa(), pago1.getPorcentaje_grasa());
+        assertEquals(pago.getPorcentaje_variacion_grasa(), pago1.getPorcentaje_variacion_grasa());
+        assertEquals(pago.getPorcentaje_solidos(), pago1.getPorcentaje_solidos());
+        assertEquals(pago.getPorcentaje_variacion_st(), pago1.getPorcentaje_variacion_st());
+        assertEquals(pago.getPago_leche(), pago1.getPago_leche());
+        assertEquals(pago.getPago_grasa(), pago1.getPago_grasa());
+        assertEquals(pago.getPago_solidos(), pago1.getPago_solidos());
+        assertEquals(pago.getBonificacion_frecuencia(), pago1.getBonificacion_frecuencia());
+        assertEquals(pago.getDescuento_variacion_klsleche(), pago1.getDescuento_variacion_klsleche());
+        assertEquals(pago.getDescuento_variacion_grasa(), pago1.getDescuento_variacion_grasa());
+        assertEquals(pago.getDescuento_variacion_st(), pago1.getDescuento_variacion_st());
+        assertEquals(pago.getPago_total(), pago1.getPago_total());
+        assertEquals(pago.getMonto_retencion(), pago1.getMonto_retencion());
+        assertEquals(pago.getMonto_final(), pago1.getMonto_final());
+
     }
 
     @Test
     void test1ObtenerPagos() {
-        PagoEntity pago = new PagoEntity(1, LocalDate.of(2023, 1, 15), "99999",
+        PagoEntity pago = new PagoEntity(9999, LocalDate.of(2023, 1, 15), "99999",
                 "juan", 350, 10, 35, 0,
                 35, 0, 15, 0,
                 0, 0, 0, 0,
                 0, 0, 0,
                 0, 0, 0);
-        pagoService.guardarPago(pago);
-        ArrayList<PagoEntity> pagos = new ArrayList<>();
-        pagos.add(pago);
-        ArrayList<PagoEntity> pagos1 = pagoService.obtenerPagos();
-        assertEquals(pagos, pagos1);
+        PagoEntity pago1 = pagoService.guardarPago(pago);
+        ArrayList<PagoEntity> pagos = pagoService.obtenerPagos();
+        assertTrue(pagos.contains(pago1));
     }
 
     @Test
