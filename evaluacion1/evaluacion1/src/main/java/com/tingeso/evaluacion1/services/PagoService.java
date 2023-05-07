@@ -36,13 +36,10 @@ public class PagoService {
     public void guardarPagos() {
         ArrayList<ProveedorEntity> proveedores = proveedorService.obtenerProveedores();
         PagoEntity pago;
-        int dia_actual = LocalDate.now().getDayOfMonth();
-        if (dia_actual == 15 || dia_actual == LocalDate.now().lengthOfMonth()) {
-            for (int i = 0; i < proveedores.size(); ++i) {
-                pago = crearPago(proveedores.get(i).getCodigo());
-                if (pago != null) {
-                    guardarPago(pago);
-                }
+        for (int i = 0; i < proveedores.size(); ++i) {
+            pago = crearPago(proveedores.get(i).getCodigo());
+            if (pago != null) {
+                guardarPago(pago);
             }
         }
         acopioLecheService.eliminarAcopios();
