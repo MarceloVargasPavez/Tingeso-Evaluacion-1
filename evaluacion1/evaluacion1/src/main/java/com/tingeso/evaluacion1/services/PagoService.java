@@ -65,6 +65,15 @@ public class PagoService {
     }
 
     /*
+    Descripcion metodo: Metodo que obtiene los pagos almacenados en la base de datos de un proveedor.
+    Parametros de entrada: Codigo del proveedor(String).
+    Retorno: Pagos(ArrayList<PagoEntity>).
+    */
+    public ArrayList<PagoEntity> obtenerPagosProveedor(String codigo_proveedor){
+        return pagoRepository.findByCodigoProveedor(codigo_proveedor);
+    }
+
+    /*
     Descripcion metodo: Metodo que crea un nuevo pago de la quincena actual para un proveedor.
     Parametros de entrada: Codigo del proveedor(String).
     Retorno: Nuevo pago(PagoEntity).

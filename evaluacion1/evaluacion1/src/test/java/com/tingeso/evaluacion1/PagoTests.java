@@ -2,7 +2,10 @@ package com.tingeso.evaluacion1;
 
 import com.tingeso.evaluacion1.entities.AcopioLecheEntity;
 import com.tingeso.evaluacion1.entities.PagoEntity;
+import com.tingeso.evaluacion1.entities.ProveedorEntity;
+import com.tingeso.evaluacion1.services.AcopioLecheService;
 import com.tingeso.evaluacion1.services.PagoService;
+import com.tingeso.evaluacion1.services.PropiedadesLecheService;
 import com.tingeso.evaluacion1.services.ProveedorService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +24,62 @@ class PagoTests {
 
     @Autowired
     ProveedorService proveedorService;
+
+    @Autowired
+    AcopioLecheService acopioLecheService;
+
+    @Autowired
+    PropiedadesLecheService propiedadesLecheService;
+
+    @Test
+    void test1GuardasPagos() {
+        proveedorService.guardarProveedor("99999", "Juan", "A", "NO");
+        propiedadesLecheService.guardarPropiedadesLecheBD("99999", 20, 15);
+        acopioLecheService.guardarAcopioBD("2023/04/01", "T", "99999", 40);
+        acopioLecheService.guardarAcopioBD("2023/04/02", "M", "99999", 40);
+        acopioLecheService.guardarAcopioBD("2023/04/02", "T", "99999", 40);
+        acopioLecheService.guardarAcopioBD("2023/04/03", "M", "99999", 40);
+        acopioLecheService.guardarAcopioBD("2023/04/03", "T", "99999", 40);
+        acopioLecheService.guardarAcopioBD("2023/04/04", "M", "99999", 40);
+        acopioLecheService.guardarAcopioBD("2023/04/04", "T", "99999", 40);
+        acopioLecheService.guardarAcopioBD("2023/04/05", "M", "99999", 40);
+        acopioLecheService.guardarAcopioBD("2023/04/05", "T", "99999", 34);
+        acopioLecheService.guardarAcopioBD("2023/04/07", "T", "99999", 54);
+        acopioLecheService.guardarAcopioBD("2023/04/09", "T", "99999", 50);
+        acopioLecheService.guardarAcopioBD("2023/04/10", "T", "99999", 46);
+        acopioLecheService.guardarAcopioBD("2023/04/14", "M", "99999", 39);
+        acopioLecheService.guardarAcopioBD("2023/04/14", "T", "99999", 40);
+        acopioLecheService.guardarAcopioBD("2023/04/15", "T", "99999", 40);
+        PagoEntity pago = pagoService.crearPago("99999");
+        proveedorService.guardarProveedor("99998", "Pedro", "A", "SI");
+        propiedadesLecheService.guardarPropiedadesLecheBD("99998", 20, 15);
+        acopioLecheService.guardarAcopioBD("2023/04/01", "T", "99998", 40);
+        acopioLecheService.guardarAcopioBD("2023/04/02", "M", "99998", 40);
+        acopioLecheService.guardarAcopioBD("2023/04/02", "T", "99998", 40);
+        acopioLecheService.guardarAcopioBD("2023/04/03", "M", "99998", 40);
+        acopioLecheService.guardarAcopioBD("2023/04/03", "T", "99998", 40);
+        acopioLecheService.guardarAcopioBD("2023/04/04", "M", "99998", 40);
+        acopioLecheService.guardarAcopioBD("2023/04/04", "T", "99998", 40);
+        acopioLecheService.guardarAcopioBD("2023/04/05", "M", "99998", 40);
+        acopioLecheService.guardarAcopioBD("2023/04/05", "T", "99998", 34);
+        acopioLecheService.guardarAcopioBD("2023/04/07", "T", "99998", 54);
+        acopioLecheService.guardarAcopioBD("2023/04/09", "T", "99998", 50);
+        acopioLecheService.guardarAcopioBD("2023/04/10", "T", "99998", 46);
+        acopioLecheService.guardarAcopioBD("2023/04/14", "M", "99998", 39);
+        acopioLecheService.guardarAcopioBD("2023/04/14", "T", "99998", 40);
+        acopioLecheService.guardarAcopioBD("2023/04/15", "T", "99998", 40);
+        PagoEntity pago1 = pagoService.crearPago("99998");
+        proveedorService.guardarProveedor("99997", "Diego", "A", "SI");
+        propiedadesLecheService.guardarPropiedadesLecheBD("99997", 20, 15);
+        PagoEntity pago2 = pagoService.crearPago("99997");
+        pagoService.guardarPagos();
+        System.out.println(pagoService.obtenerPagos());
+        assertEquals("Juan", pagoService.obtenerPagosProveedor("99999").get(0).getNombre_proveedor());
+        assertEquals(LocalDate.of(2023, 4, 15), pagoService.obtenerPagosProveedor("99999").get(0).getQuincena());
+        assertEquals("Pedro", pagoService.obtenerPagosProveedor("99998").get(0).getNombre_proveedor());
+        assertEquals(LocalDate.of(2023, 4, 15), pagoService.obtenerPagosProveedor("99998").get(0).getQuincena());
+        assertTrue(pagoService.obtenerPagosProveedor("99997").isEmpty());
+    }
 
     @Test
     void test1GuardaPago() {
@@ -66,6 +125,45 @@ class PagoTests {
         PagoEntity pago1 = pagoService.guardarPago(pago);
         ArrayList<PagoEntity> pagos = pagoService.obtenerPagos();
         assertTrue(pagos.contains(pago1));
+    }
+
+    @Test
+    void test1ObtenerPagosProveedor() {
+        PagoEntity pago = new PagoEntity(9999, LocalDate.of(2023, 1, 15), "99999",
+                "juan", 350, 10, 35, 0,
+                35, 0, 15, 0,
+                0, 0, 0, 0,
+                0, 0, 0,
+                0, 0, 0);
+        PagoEntity pago1 = pagoService.guardarPago(pago);
+        ArrayList<PagoEntity> pagos = pagoService.obtenerPagosProveedor("99999");
+        assertTrue(pagos.contains(pago1));
+    }
+
+    @Test
+    void test1CrearPago() {
+        proveedorService.guardarProveedor("99999", "Juan", "A", "NO");
+        propiedadesLecheService.guardarPropiedadesLecheBD("99999", 20, 15);
+        acopioLecheService.guardarAcopioBD("2023/04/01", "T", "99999", 40);
+        acopioLecheService.guardarAcopioBD("2023/04/02", "M", "99999", 40);
+        acopioLecheService.guardarAcopioBD("2023/04/02", "T", "99999", 40);
+        acopioLecheService.guardarAcopioBD("2023/04/03", "M", "99999", 40);
+        acopioLecheService.guardarAcopioBD("2023/04/03", "T", "99999", 40);
+        acopioLecheService.guardarAcopioBD("2023/04/04", "M", "99999", 40);
+        acopioLecheService.guardarAcopioBD("2023/04/04", "T", "99999", 40);
+        acopioLecheService.guardarAcopioBD("2023/04/05", "M", "99999", 40);
+        acopioLecheService.guardarAcopioBD("2023/04/05", "T", "99999", 34);
+        acopioLecheService.guardarAcopioBD("2023/04/07", "T", "99999", 54);
+        acopioLecheService.guardarAcopioBD("2023/04/09", "T", "99999", 50);
+        acopioLecheService.guardarAcopioBD("2023/04/10", "T", "99999", 46);
+        acopioLecheService.guardarAcopioBD("2023/04/14", "M", "99999", 39);
+        acopioLecheService.guardarAcopioBD("2023/04/14", "T", "99999", 40);
+        acopioLecheService.guardarAcopioBD("2023/04/15", "T", "99999", 40);
+        PagoEntity pago = pagoService.crearPago("99999");
+        assertEquals("99999", pago.getCodigo_proveedor());
+        assertEquals("Juan", pago.getNombre_proveedor());
+        assertEquals(LocalDate.of(2023, 4, 15), pago.getQuincena());
+        assertNotNull(pago);
     }
 
     @Test
