@@ -16,9 +16,9 @@
 	<properties>
 		<java.version>11</java.version>
 		<sonar.exclusions>
-			src/main/java/com.tingeso.evaluacion1/entities/*,
-			src/main/java/com.tingeso.evaluacion1/controllers/*,
-			src/main/java/com.tingeso.evaluacion1/repositories/*
+			src/main/java/com/tingeso/evaluacion1/entities/*,
+			src/main/java/com/tingeso/evaluacion1/controllers/*,
+			src/main/java/com/tingeso/evaluacion1/repositories/*
 		</sonar.exclusions>
 
 	</properties>
