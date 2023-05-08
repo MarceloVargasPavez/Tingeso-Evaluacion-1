@@ -33,24 +33,24 @@ class PagoTests {
 
     @Test
     void test1GuardasPagos() {
-        proveedorService.guardarProveedor("99999", "Juan", "A", "NO");
-        propiedadesLecheService.guardarPropiedadesLecheBD("99999", 20, 15);
-        acopioLecheService.guardarAcopioBD("2023/04/01", "T", "99999", 40);
-        acopioLecheService.guardarAcopioBD("2023/04/02", "M", "99999", 40);
-        acopioLecheService.guardarAcopioBD("2023/04/02", "T", "99999", 40);
-        acopioLecheService.guardarAcopioBD("2023/04/03", "M", "99999", 40);
-        acopioLecheService.guardarAcopioBD("2023/04/03", "T", "99999", 40);
-        acopioLecheService.guardarAcopioBD("2023/04/04", "M", "99999", 40);
-        acopioLecheService.guardarAcopioBD("2023/04/04", "T", "99999", 40);
-        acopioLecheService.guardarAcopioBD("2023/04/05", "M", "99999", 40);
-        acopioLecheService.guardarAcopioBD("2023/04/05", "T", "99999", 34);
-        acopioLecheService.guardarAcopioBD("2023/04/07", "T", "99999", 54);
-        acopioLecheService.guardarAcopioBD("2023/04/09", "T", "99999", 50);
-        acopioLecheService.guardarAcopioBD("2023/04/10", "T", "99999", 46);
-        acopioLecheService.guardarAcopioBD("2023/04/14", "M", "99999", 39);
-        acopioLecheService.guardarAcopioBD("2023/04/14", "T", "99999", 40);
-        acopioLecheService.guardarAcopioBD("2023/04/15", "T", "99999", 40);
-        PagoEntity pago = pagoService.crearPago("99999");
+        proveedorService.guardarProveedor("99990", "Juan", "A", "NO");
+        propiedadesLecheService.guardarPropiedadesLecheBD("99990", 20, 15);
+        acopioLecheService.guardarAcopioBD("2023/04/01", "T", "99990", 40);
+        acopioLecheService.guardarAcopioBD("2023/04/02", "M", "99990", 40);
+        acopioLecheService.guardarAcopioBD("2023/04/02", "T", "99990", 40);
+        acopioLecheService.guardarAcopioBD("2023/04/03", "M", "99990", 40);
+        acopioLecheService.guardarAcopioBD("2023/04/03", "T", "99990", 40);
+        acopioLecheService.guardarAcopioBD("2023/04/04", "M", "99990", 40);
+        acopioLecheService.guardarAcopioBD("2023/04/04", "T", "99990", 40);
+        acopioLecheService.guardarAcopioBD("2023/04/05", "M", "99990", 40);
+        acopioLecheService.guardarAcopioBD("2023/04/05", "T", "99990", 34);
+        acopioLecheService.guardarAcopioBD("2023/04/07", "T", "99990", 54);
+        acopioLecheService.guardarAcopioBD("2023/04/09", "T", "99990", 50);
+        acopioLecheService.guardarAcopioBD("2023/04/10", "T", "99990", 46);
+        acopioLecheService.guardarAcopioBD("2023/04/14", "M", "99990", 39);
+        acopioLecheService.guardarAcopioBD("2023/04/14", "T", "99990", 40);
+        acopioLecheService.guardarAcopioBD("2023/04/15", "T", "99990", 40);
+        PagoEntity pago = pagoService.crearPago("99990");
         proveedorService.guardarProveedor("99998", "Pedro", "A", "SI");
         propiedadesLecheService.guardarPropiedadesLecheBD("99998", 20, 15);
         acopioLecheService.guardarAcopioBD("2023/04/01", "T", "99998", 40);
@@ -74,8 +74,8 @@ class PagoTests {
         PagoEntity pago2 = pagoService.crearPago("99997");
         pagoService.guardarPagos();
         System.out.println(pagoService.obtenerPagos());
-        assertEquals("Juan", pagoService.obtenerPagosProveedor("99999").get(0).getNombre_proveedor());
-        assertEquals(LocalDate.of(2023, 4, 15), pagoService.obtenerPagosProveedor("99999").get(0).getQuincena());
+        assertEquals("Juan", pagoService.obtenerPagosProveedor("99990").get(0).getNombre_proveedor());
+        assertEquals(LocalDate.of(2023, 4, 15), pagoService.obtenerPagosProveedor("99990").get(0).getQuincena());
         assertEquals("Pedro", pagoService.obtenerPagosProveedor("99998").get(0).getNombre_proveedor());
         assertEquals(LocalDate.of(2023, 4, 15), pagoService.obtenerPagosProveedor("99998").get(0).getQuincena());
         assertTrue(pagoService.obtenerPagosProveedor("99997").isEmpty());

@@ -218,7 +218,7 @@ public class PagoService {
     Retorno: Promedio diario de kls de leche entregados por el proveedor(float).
     */
     public float promedioDiarioLeche(float total_Klsleche, LocalDate quincena) {
-        float total_dias;
+        int total_dias;
         float promedio = 0;
         if (quincena != null) {
             if (quincena.getDayOfMonth() > 15) {
