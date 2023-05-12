@@ -35,4 +35,8 @@ build/
 ### Docker ###
 /data
 
+### Sonarqube ###
 /sonarqube-9.9.1.69595
+
+### Jenkins ###
+jenkins.war

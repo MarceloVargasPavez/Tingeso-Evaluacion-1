@@ -26,7 +26,7 @@ public class AcopioLecheController {
 
     @PostMapping("/subirArchivoAcopio")
     public String subirAcopio(@RequestParam("file")MultipartFile file, RedirectAttributes redirectAttributes){
-        acopioLecheService.guardar(file);
+        acopioLecheService.guardarArchivoAcopio(file);
         redirectAttributes.addFlashAttribute("mensaje", "Archivo cargado!");
         acopioLecheService.leerCSV("Acopio.csv");
         return "redirect:/subirArchivoAcopio";

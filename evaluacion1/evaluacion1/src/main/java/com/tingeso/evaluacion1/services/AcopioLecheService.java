@@ -90,7 +90,7 @@ public class AcopioLecheService {
     Retorno: Mensaje de comprobacion(String).
     */
     @Generated
-    public String guardar(MultipartFile file) {
+    public String guardarArchivoAcopio(MultipartFile file) {
         String filename = file.getOriginalFilename();
         if (filename != null) {
             if (!file.isEmpty()) {
