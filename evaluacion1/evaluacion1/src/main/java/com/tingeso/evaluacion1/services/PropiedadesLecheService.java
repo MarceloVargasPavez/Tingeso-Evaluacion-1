@@ -98,16 +98,16 @@ public class PropiedadesLecheService {
                     byte[] bytes = file.getBytes();
                     Path path = Paths.get(file.getOriginalFilename());
                     Files.write(path, bytes);
-                    logg.info("Archivo guardado");
+                    logg.info("Archivo de Propiedades Guardado");
                 } catch (IOException e) {
                     logg.error("ERROR", e);
                 }
             } else {
-                return "Archivo guardado con exito";
+                return "Archivo de Propiedades Guardado con Exito";
             }
-            return "Archivo guardado con exito";
+            return "Archivo de Propiedades Guardado con Exito";
         } else {
-            return "No se pudo guardar el archivo";
+            return "No Se Pudo Guardar el Archivo de Propiedades";
         }
     }
 
@@ -134,9 +134,9 @@ public class PropiedadesLecheService {
                 }
             }
             texto = temp;
-            System.out.println("Archivo leido exitosamente.");
+            logg.info("Archivo de Propiedades Leido Exitosamente.");
         } catch (Exception e) {
-            System.out.println("No se encontro el archivo");
+            logg.info("No Se Encontro el Archivo de Propiedades");
         } finally {
             if (bf != null) {
                 try {

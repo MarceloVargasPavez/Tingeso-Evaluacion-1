@@ -541,7 +541,7 @@ class PagoTests {
         fechas.add(LocalDate.of(2023, 4, 14));
         fechas.add(LocalDate.of(2023, 4, 15));
         LocalDate quincena = LocalDate.of(2023, 4, 15);
-        float bonificacion = pagoService.calculoBonificaionFrecuencia(acopios, fechas, quincena);
+        float bonificacion = pagoService.calculoBonificaionFrecuencia(pagoService.obtenerTurnosQuincena(acopios, fechas, quincena));
         assertEquals(8, bonificacion, 0.0);
     }
 

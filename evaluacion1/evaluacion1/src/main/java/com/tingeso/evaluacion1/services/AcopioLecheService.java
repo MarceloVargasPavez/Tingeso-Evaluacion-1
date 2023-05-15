@@ -69,16 +69,16 @@ public class AcopioLecheService {
                     byte[] bytes = file.getBytes();
                     Path path = Paths.get(file.getOriginalFilename());
                     Files.write(path, bytes);
-                    logg.info("Archivo guardado");
+                    logg.info("Archivo de Acopio Guardado");
                 } catch (IOException e) {
                     logg.error("ERROR", e);
                 }
             } else {
                 return "Archivo guardado con exito";
             }
-            return "Archivo guardado con exito";
+            return "Archivo de Acopio guardado con exito";
         } else {
-            return "No se pudo guardar el archivo";
+            return "No se pudo guardar el archivo de Acopio";
         }
     }
 
@@ -101,9 +101,9 @@ public class AcopioLecheService {
                 }
             }
             texto = temp;
-            System.out.println("Archivo leido exitosamente.");
+            logg.info("Archivo de Acopio Leido Exitosamente.");
         } catch (Exception e) {
-            System.out.println("No se encontro el archivo");
+            logg.info("No Se Encontro el Archivo de Acopio");
         } finally {
             if (bf != null) {
                 try {

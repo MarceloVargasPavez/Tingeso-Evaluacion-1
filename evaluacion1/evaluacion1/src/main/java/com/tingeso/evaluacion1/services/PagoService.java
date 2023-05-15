@@ -11,7 +11,11 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Service
 public class PagoService {
@@ -104,7 +108,7 @@ public class PagoService {
 
         nuevo_pago.setPago_solidos(pagoPorSolidos(nuevo_pago.getPorcentaje_solidos(), nuevo_pago.getTotal_klsleche()));
 
-        nuevo_pago.setBonificacion_frecuencia(calculoBonificaionFrecuencia(acopios, fechas, nuevo_pago.getQuincena()));
+        nuevo_pago.setBonificacion_frecuencia(calculoBonificaionFrecuencia(obtenerTurnosQuincena(acopios, fechas, nuevo_pago.getQuincena())));
 
         nuevo_pago.setDescuento_variacion_klsleche(porcentajeDescuentoVariacionLeche(nuevo_pago.getPorcentaje_variacion_leche()));
 
@@ -363,13 +367,7 @@ public class PagoService {
         return total;
     }
 
-    /*
-    Descripcion metodo: Metodo que obtiene la bonificacion por frecuencia.
-    Parametros de entrada: Acopios(ArrayList<AcopioLecheEntity>), fechas(ArrayList<LocalDate>) y quincena(LocalDate).
-    Retorno: Bonificacion por frecuencia(float).
-    */
-    public float calculoBonificaionFrecuencia(ArrayList<AcopioLecheEntity> acopios, ArrayList<LocalDate> fechas, LocalDate quincena) {
-        float bonificacion = 0;
+    public ArrayList<String> obtenerTurnosQuincena(ArrayList<AcopioLecheEntity> acopios, ArrayList<LocalDate> fechas, LocalDate quincena) {
         ArrayList<String> turnos = new ArrayList<>();
         int inicio_mes;
         int final_quincena;
@@ -383,18 +381,15 @@ public class PagoService {
             final_quincena = 15;
         }
         for (int i = inicio_mes; i <= final_quincena; ++i) {
-            maniana = false;
-            tarde = false;
-            for (int j = 0; j < fechas.size(); ++j) {
-                if (fechas.get(j).getDayOfMonth() == i) {
-                    if (Objects.equals(acopios.get(j).getTurno(), "M")) {
-                        maniana = true;
-                    }
-                    if (Objects.equals(acopios.get(j).getTurno(), "T")) {
-                        tarde = true;
-                    }
-                }
-            }
+            int dia = i;
+            List<AcopioLecheEntity> acopiosFiltrados = IntStream.range(0, fechas.size())
+                    .filter(j -> fechas.get(j).getDayOfMonth() == dia)
+                    .mapToObj(acopios::get)
+                    .collect(Collectors.toList());
+            maniana = acopiosFiltrados.stream()
+                    .anyMatch(acopio -> Objects.equals(acopio.getTurno(), "M"));
+            tarde = acopiosFiltrados.stream()
+                    .anyMatch(acopio -> Objects.equals(acopio.getTurno(), "T"));
             if (maniana && tarde) {
                 turnos.add("MyT");
             }
@@ -404,31 +399,22 @@ public class PagoService {
             if (!maniana && tarde) {
                 turnos.add("T");
             }
-            if (!maniana && !tarde) {
-                turnos.add("Null");
-            }
         }
-        int contador_maniana_tarde = 0;
-        int contador_maniana = 0;
-        int contador_tarde = 0;
-        for (String turno : turnos) {
-            if (Objects.equals(turno, "MyT")) {
-                contador_maniana_tarde = contador_maniana_tarde + 1;
-            }
-            if (Objects.equals(turno, "M") || Objects.equals(turno, "MyT")) {
-                contador_maniana = contador_maniana + 1;
-            }
-            if (Objects.equals(turno, "T") || Objects.equals(turno, "MyT")) {
-                contador_tarde = contador_tarde + 1;
-            }
-        }
-        if (contador_maniana_tarde >= 10) {
+        return turnos;
+    }
+
+    public float calculoBonificaionFrecuencia(ArrayList<String> turnos) {
+        float bonificacion = 0;
+        int cantidad_maniana_tarde = Collections.frequency(turnos, "MyT");
+        int cantidad_maniana = Collections.frequency(turnos, "MyT") + Collections.frequency(turnos, "M");
+        int cantidad_tarde = Collections.frequency(turnos, "MyT") + Collections.frequency(turnos, "T");
+        if (cantidad_maniana_tarde >= 10) {
             bonificacion = 20;
         } else {
-            if (contador_maniana >= 10) {
+            if (cantidad_maniana >= 10) {
                 bonificacion = 12;
             } else {
-                if (contador_tarde >= 10) {
+                if (cantidad_tarde >= 10) {
                     bonificacion = 8;
                 }
             }
