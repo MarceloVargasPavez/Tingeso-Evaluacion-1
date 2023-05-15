@@ -24,7 +24,7 @@ public class PropiedadesLecheService {
     @Autowired
     PropiedadesLecheRepository propiedadesLecheRepository;
 
-    private final Logger logg = LoggerFactory.getLogger(AcopioLecheService.class);
+    private final Logger logg = LoggerFactory.getLogger(PropiedadesLecheService.class);
 
     /*
     Descripcion metodo: Metodo que guarda una propiedad de leche en la base de datos.
@@ -64,7 +64,7 @@ public class PropiedadesLecheService {
     */
     public PropiedadesLecheEntity obtenerPropiedadesProveedor(String codigo_proveedor) {
         PropiedadesLecheEntity propiedades_proveedor = new PropiedadesLecheEntity();
-        ArrayList<PropiedadesLecheEntity> total_propiedades = new ArrayList<>();
+        ArrayList<PropiedadesLecheEntity> total_propiedades;
         total_propiedades = (ArrayList<PropiedadesLecheEntity>) propiedadesLecheRepository.findAll();
         for (PropiedadesLecheEntity totalPropiedade : total_propiedades) {
             if (Objects.equals(totalPropiedade.getCodigo_proveedor(), codigo_proveedor)) {

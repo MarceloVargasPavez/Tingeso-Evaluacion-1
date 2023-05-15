@@ -39,7 +39,7 @@ pipeline{
                     withCredentials([string(credentialsId: 'dckrhubpassword', variable: 'dckpass')]) {
                         sh "docker login -u marcelovargaspavez -p ${dckpass}"
                     }
-                    sh "docker push marcelovargaspavez/proyecto-docker"
+                    sh "docker push marcelovargaspavez/proyecto_docker"
                 }
             }
         }

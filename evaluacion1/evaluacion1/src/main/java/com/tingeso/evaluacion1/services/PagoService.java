@@ -28,16 +28,15 @@ public class PagoService {
     @Autowired
     PropiedadesLecheService propiedadesLecheService;
 
-    /*
-    Descripcion metodo: Metodo que almacena los pagos de cada proveedor en la base de datos.
-    Parametros de entrada: Vacio.
-    Retorno: Vacio.
-    */
+    public PagoEntity guardarPago(PagoEntity pago) {
+        return pagoRepository.save(pago);
+    }
+
     public void guardarPagos() {
         ArrayList<ProveedorEntity> proveedores = proveedorService.obtenerProveedores();
         PagoEntity pago;
-        for (int i = 0; i < proveedores.size(); ++i) {
-            pago = crearPago(proveedores.get(i).getCodigo());
+        for (ProveedorEntity proveedore : proveedores) {
+            pago = crearPago(proveedore.getCodigo());
             if (pago != null) {
                 guardarPago(pago);
             }
@@ -46,38 +45,14 @@ public class PagoService {
         propiedadesLecheService.eliminarPropiedades();
     }
 
-    /*
-    Descripcion metodo: Metodo que almacena un pago en la base de datos.
-    Parametros de entrada: Pago(PagoEntity).
-    Retorno: Pago(PagoEntity).
-    */
-    public PagoEntity guardarPago(PagoEntity pago) {
-        return pagoRepository.save(pago);
-    }
-
-    /*
-    Descripcion metodo: Metodo que obtiene los pagos almacenados en la base de datos.
-    Parametros de entrada: Vacio.
-    Retorno: Pagos(ArrayList<PagoEntity>).
-    */
     public ArrayList<PagoEntity> obtenerPagos() {
         return (ArrayList<PagoEntity>) pagoRepository.findAll();
     }
 
-    /*
-    Descripcion metodo: Metodo que obtiene los pagos almacenados en la base de datos de un proveedor.
-    Parametros de entrada: Codigo del proveedor(String).
-    Retorno: Pagos(ArrayList<PagoEntity>).
-    */
-    public ArrayList<PagoEntity> obtenerPagosProveedor(String codigo_proveedor){
+    public ArrayList<PagoEntity> obtenerPagosProveedor(String codigo_proveedor) {
         return pagoRepository.findByCodigoProveedor(codigo_proveedor);
     }
 
-    /*
-    Descripcion metodo: Metodo que crea un nuevo pago de la quincena actual para un proveedor.
-    Parametros de entrada: Codigo del proveedor(String).
-    Retorno: Nuevo pago(PagoEntity).
-    */
     public PagoEntity crearPago(String codigo_proveedor) {
 
         PagoEntity nuevo_pago = new PagoEntity();
@@ -85,10 +60,10 @@ public class PagoService {
         ProveedorEntity proveedor_actual = proveedorService.obtenerPorCodigo(codigo_proveedor);
 
         //Se obtienen los acopios de la quincena del proveedor.
-        ArrayList<AcopioLecheEntity> acopios = new ArrayList<>();
+        ArrayList<AcopioLecheEntity> acopios;
         acopios = acopioLecheService.obtenerAcopiosProveedor(codigo_proveedor);
 
-        if (acopios.size() == 0) {
+        if (acopios.isEmpty()) {
             return null;
         }
 
@@ -97,7 +72,7 @@ public class PagoService {
         nuevo_pago.setNombre_proveedor(proveedor_actual.getNombre());
 
         //Se obtienen las propiedades de la leche de la quincena del proveedor.
-        PropiedadesLecheEntity propiedades_proveedor = new PropiedadesLecheEntity();
+        PropiedadesLecheEntity propiedades_proveedor;
         propiedades_proveedor = propiedadesLecheService.obtenerPropiedadesProveedor(codigo_proveedor);
 
         //Se crea un arreglo de fechas de tipo LocalDate y se transforman las de acopios.
@@ -154,16 +129,11 @@ public class PagoService {
         return nuevo_pago;
     }
 
-    /*
-    Descripcion metodo: Metodo que establece la quincena actual.
-    Parametros de entrada: Fechas(ArrayList<LocalDate>).
-    Retorno: Quincena(LocalDate) o null en caso de que no existan acopios.
-    */
     public LocalDate establecerQuincena(ArrayList<LocalDate> fechas) {
         int dia;
         int mes;
         int anio;
-        if (fechas.size() > 0) {
+        if (!fechas.isEmpty()) {
             LocalDate primeraFecha = fechas.get(0);
             if (fechas.get(0).getDayOfMonth() > 15) {
                 dia = primeraFecha.lengthOfMonth();
@@ -180,11 +150,7 @@ public class PagoService {
         return LocalDate.of(anio, mes, dia);
     }
 
-    /*
-    Descripcion metodo: Metodo que obtiene el total de kls de leche de la quincena de un proveedor.
-    Parametros de entrada: Acopios del proveedor(ArrayList<AcopioLecheEntity>).
-    Retorno: Total de kilos de leche de la quincena(int).
-    */
+    //Descripcion metodo: Metodo que obtiene el total de kls de leche de la quincena de un proveedor
     public int totalKlsLeche(ArrayList<AcopioLecheEntity> acopios_proveedor) {
         int totalKls = 0;
         for (AcopioLecheEntity acopioLecheEntity : acopios_proveedor) {
@@ -193,11 +159,6 @@ public class PagoService {
         return totalKls;
     }
 
-    /*
-    Descripcion metodo: Metodo que obtiene la cantidad de dias dentro de la quincena que un proveedor envio leche.
-    Parametros de entrada: Fechas(ArrayList<LocalDate>).
-    Retorno: Cantidad de dias en los que se realizaron acopios(int).
-    */
     public int cantidadDiasEnvio(ArrayList<LocalDate> fechas) {
         int diaActual;
         ArrayList<Integer> dias = new ArrayList<>();
@@ -212,11 +173,6 @@ public class PagoService {
         return dias.size();
     }
 
-    /*
-    Descripcion metodo: Metodo que obtiene el promedio diario de kls de leche enviados por un proveedor.
-    Parametros de entrada: Total de kls de leche(float) y fecha(LocalDate).
-    Retorno: Promedio diario de kls de leche entregados por el proveedor(float).
-    */
     public float promedioDiarioLeche(float total_Klsleche, LocalDate quincena) {
         int total_dias;
         float promedio = 0;
@@ -233,11 +189,7 @@ public class PagoService {
         return promedio;
     }
 
-    /*
-    Descripcion metodo: Metodo que transforma cada fecha String de los acopios a tipo LocalDate.
-    Parametros de entrada: Acopios(ArrayList<AcopioLecheEntity>).
-    Retorno: ArrayList con las fechas de tipo LocalDate(ArrayList<LocalDate>).
-    */
+    //Descripcion metodo: Metodo que transforma cada fecha String de los acopios a tipo LocalDate.
     public ArrayList<LocalDate> transformarfechas(ArrayList<AcopioLecheEntity> acopios_proveedor) {
         ArrayList<LocalDate> fechas = new ArrayList<>();
         // Crear un objeto DateTimeFormatter para analizar la cadena de fecha
@@ -248,20 +200,10 @@ public class PagoService {
         return fechas;
     }
 
-    /*
-    Descripcion metodo: Metodo para calcular porcentaje de variacion.
-    Parametros de entrada: Valor actual(float) y valor anterior(float).
-    Retorno: Porcentaje de variacion(float).
-    */
     public float calculoVariacion(float valor_actual, float valor_anterior) {
         return ((valor_actual - valor_anterior) / valor_anterior) * 100;
     }
 
-    /*
-    Descripcion metodo: Metodo para calcular porcentaje de variacion de leche.
-    Parametros de entrada: Total de kls de leche(float) y pago anterior del proveedor(PagoEntity).
-    Retorno: Porcentaje de variacion de leche(float).
-    */
     public float porcentajeVariacionLeche(float total_klsleche, PagoEntity pago_anterior) {
         float porcentaje_variacion = 0;
         if (pago_anterior != null) {
@@ -270,11 +212,6 @@ public class PagoService {
         return porcentaje_variacion;
     }
 
-    /*
-    Descripcion metodo: Metodo para calcular porcentaje de variacion de grasa.
-    Parametros de entrada: Porcentaje de grasa(float) y pago anterior del proveedor(PagoEntity).
-    Retorno: Porcentaje de variacion de grasa(float).
-    */
     public float porcentajeVariacionGrasa(float porcentaje_grasa, PagoEntity pago_anterior) {
         float porcentaje_variacion_grasa = 0;
         if (pago_anterior != null) {
@@ -283,11 +220,6 @@ public class PagoService {
         return porcentaje_variacion_grasa;
     }
 
-    /*
-    Descripcion metodo: Metodo para calcular porcentaje de variacion de solidos.
-    Parametros de entrada: Porcentaje de solidos(float) y pago anterior del proveedor(PagoEntity).
-    Retorno: Porcentaje de variacion de solidos(float).
-    */
     public float porcentajeVariacionSolidos(float porcentaje_solidos, PagoEntity pago_anterior) {
         float porcentaje_variacion_solidos = 0;
         if (pago_anterior != null) {
@@ -296,13 +228,8 @@ public class PagoService {
         return porcentaje_variacion_solidos;
     }
 
-    /*
-    Descripcion metodo: Metodo que obtiene el pago de la quincena anterior de un proveedor.
-    Parametros de entrada: Codigo del proveedor(String) y quincena actual(LocalDate).
-    Retorno: Pago anterior(PagoEntity) o null.
-    */
     public PagoEntity obtenerPagoQuincenaAnterior(String codigo_proveedor, LocalDate quincena_actual) {
-        ArrayList<PagoEntity> pagos = new ArrayList<>();
+        ArrayList<PagoEntity> pagos;
         pagos = (ArrayList<PagoEntity>) pagoRepository.findAll();
         PagoEntity pago_anterior = null;
         LocalDate quincena_anterior;
@@ -325,7 +252,7 @@ public class PagoService {
             }
         }
         LocalDate quincena_pago;
-        if (pagos.size() != 0) {
+        if (!pagos.isEmpty()) {
             for (PagoEntity pago : pagos) {
                 quincena_pago = pago.getQuincena();
                 if (Objects.equals(pago.getCodigo_proveedor(), codigo_proveedor) && quincena_pago.getDayOfMonth() == quincena_anterior.getDayOfMonth()
@@ -340,11 +267,6 @@ public class PagoService {
         return pago_anterior;
     }
 
-    /*
-    Descripcion metodo: Metodo que obtiene el porcentaje de descuento de variacion de leche.
-    Parametros de entrada: Porcentaje de variacion de leche actual(float).
-    Retorno: Porcentaje de descuento de variacion de leche(int).
-    */
     public int porcentajeDescuentoVariacionLeche(float porcentaje_variacion_leche) {
         int porcentaje_descuento = 0;
         if (porcentaje_variacion_leche <= -8) {
@@ -361,11 +283,6 @@ public class PagoService {
         return porcentaje_descuento;
     }
 
-    /*
-    Descripcion metodo: Metodo que obtiene el porcentaje de descuento de variacion de grasa.
-    Parametros de entrada: Porcentaje de variacion de grasa actual(float).
-    Retorno: Porcentaje de descuento de variacion de grasa(int).
-    */
     public int porcentajeDescuentoVariacionGrasa(float porcentaje_variacion_grasa) {
         int porcentaje_descuento = 0;
         if (porcentaje_variacion_grasa <= -15) {
@@ -382,11 +299,6 @@ public class PagoService {
         return porcentaje_descuento;
     }
 
-    /*
-    Descripcion metodo: Metodo que obtiene el porcentaje de descuento de variacion de solidos.
-    Parametros de entrada: Porcentaje de variacion de solidos actual(float).
-    Retorno: Porcentaje de descuento de variacion de solidos(int).
-    */
     public int porcentajeDescuentoVariacionSolidos(float porcentaje_variacion_solidos) {
         int porcentaje_descuento = 0;
         if (porcentaje_variacion_solidos <= -6) {
@@ -403,11 +315,6 @@ public class PagoService {
         return porcentaje_descuento;
     }
 
-    /*
-    Descripcion metodo: Metodo que obtiene pago de leche segun la categoria del proveedor.
-    Parametros de entrada: Categoria del proveedor(String) y total de kls de leche enviados(int).
-    Retorno: Pago por leche(int).
-    */
     public int pagoPorLeche(String categoria_proveedor, int total_klsleche) {
         int total = 0;
         if (Objects.equals(categoria_proveedor, "A")) {
@@ -425,11 +332,6 @@ public class PagoService {
         return total;
     }
 
-    /*
-    Descripcion metodo: Metodo que obtiene el pago por grasa.
-    Parametros de entrada: Porcentaje de grasa(float) y total de kls de leche enviados(int).
-    Retorno: Pago por grasa(int).
-    */
     public int pagoPorGrasa(float porcentaje_grasa, int total_klsleche) {
         int total = 0;
         if (porcentaje_grasa >= 0 && porcentaje_grasa <= 20) {
@@ -444,11 +346,6 @@ public class PagoService {
         return total;
     }
 
-    /*
-    Descripcion metodo: Metodo que obtiene el pago por solidos.
-    Parametros de entrada: Porcentaje de solidos(float) y total de kls de leche enviados(int).
-    Retorno: Pago por solidos(int).
-    */
     public int pagoPorSolidos(float porcentaje_solidos, int total_klsleche) {
         int total = 0;
         if (porcentaje_solidos >= 0 && porcentaje_solidos <= 7) {
@@ -539,43 +436,20 @@ public class PagoService {
         return bonificacion;
     }
 
-    /*
-    Descripcion metodo: Metodo que obtiene el pago por acopio.
-    Parametros de entrada: Pago por leche(int), pago por grasa(int),
-    pago por solidos(int) y bonificacion(float).
-    Retorno: Pago por acopio de leche(float).
-    */
     public float pagoAcopioLeche(int pago_leche, int pago_grasa, int pago_solidos, float bonificacion_frecuencia) {
         return pago_leche + pago_grasa + pago_solidos + pago_leche * (bonificacion_frecuencia / 100);
     }
 
-    /*
-    Descripcion metodo: Metodo que obtiene el monto toal de descuentos.
-    Parametros de entrada: Pago por acopio(float), porcentaje de descuento de variacion de leche(float),
-    porcentaje de descuento de variacion de grasa(float) y porcentaje de descuento de variacion de solidos(float).
-    Retorno: Pago final(float).
-    */
     public float descuentos(float pago_acopio_leche, float descuento_variacion_leche, float descuento_variacion_grasa, float descuento_variacion_solidos) {
         return -pago_acopio_leche * (descuento_variacion_leche / 100) -
                 pago_acopio_leche * (descuento_variacion_grasa / 100) -
                 pago_acopio_leche * (descuento_variacion_solidos / 100);
     }
 
-    /*
-    Descripcion metodo: Metodo que obtiene el pago total.
-    Parametros de entrada: Pago por acopio(float) y descuentos(float).
-    Retorno: Pago Total(float).
-    */
     public float pagoTotal(float pago_acopio_leche, float descuentos) {
         return pago_acopio_leche + descuentos;
     }
 
-    /*
-    Descripcion metodo: Metodo que obtiene el pago final(Se le resta la retencion
-    al pago total).
-    Parametros de entrada: Pago total(float) y retencion(int).
-    Retorno: Pago final(float).
-    */
     public float pagoFinal(float pago_total, int retencion) {
         return pago_total - retencion;
     }

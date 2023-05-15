@@ -26,20 +26,10 @@ public class AcopioLecheService {
 
     private final Logger logg = LoggerFactory.getLogger(AcopioLecheService.class);
 
-    /*
-    Descripcion metodo: Metodo que guarda un acopio en la base de datos.
-    Parametros de entrada: Acopio(AcopioLecheEntity).
-    Retorno: Acopio(AcopioLecheEntity).
-    */
     public AcopioLecheEntity guardarAcopio(AcopioLecheEntity acopio) {
         return acopioLecheRepository.save(acopio);
     }
 
-    /*
-    Descripcion metodo: Metodo que crea un acopio y lo guarda en la base de datos.
-    Parametros de entrada: Fecha(String), turno(String), codigo del proveedor(String) y kilos de leche(Integer).
-    Retorno: Acopio(AcopioLecheEntity).
-    */
     public AcopioLecheEntity guardarAcopioBD(String fecha, String turno, String codigo_proveedor, Integer kilos_leche) {
         AcopioLecheEntity nuevoAcopio = new AcopioLecheEntity();
         nuevoAcopio.setFecha(fecha);
@@ -49,20 +39,10 @@ public class AcopioLecheService {
         return guardarAcopio(nuevoAcopio);
     }
 
-    /*
-    Descripcion metodo: Metodo que obtiene todos los acopios de la base de datos.
-    Parametros de entrada: Vacio.
-    Retorno: Lista con los acopios encontrados(ArrayList<AcopioLecheEntity>).
-    */
     public ArrayList<AcopioLecheEntity> obtenerAcopiosLeche() {
         return (ArrayList<AcopioLecheEntity>) acopioLecheRepository.findAll();
     }
 
-    /*
-    Descripcion metodo: Metodo que obtiene todos los acopios pertenecientes a un Proveedor.
-    Parametros de entrada: codigo del proveedor(String).
-    Retorno: Lista con los acopios pertenecientes a ese Proveedor(ArrayList<AcopioLecheEntity>).
-    */
     public ArrayList<AcopioLecheEntity> obtenerAcopiosProveedor(String codigo_proveedor) {
         ArrayList<AcopioLecheEntity> acopios;
         acopios = (ArrayList<AcopioLecheEntity>) acopioLecheRepository.findAll();
@@ -75,20 +55,11 @@ public class AcopioLecheService {
         return acopiosProveedor;
     }
 
-    /*
-    Descripcion metodo: Metodo que elimina todos los acopios almacenados en la base de datos.
-    Parametros de entrada: Vacio.
-    Retorno: Vacio.
-    */
     public void eliminarAcopios() {
         acopioLecheRepository.deleteAll();
     }
 
-    /*
-    Descripcion metodo: Metodo que guarda un archivo.
-    Parametros de entrada: Archivo(MultipartFile).
-    Retorno: Mensaje de comprobacion(String).
-    */
+    //Descripcion metodo: Metodo que guarda un archivo.
     @Generated
     public String guardarArchivoAcopio(MultipartFile file) {
         String filename = file.getOriginalFilename();
@@ -111,11 +82,7 @@ public class AcopioLecheService {
         }
     }
 
-    /*
-    Descripcion metodo: Metodo que lee archivo CSV, guardando los acopios en la base de datos.
-    Parametros de entrada: Direccion(String).
-    Retorno: Vacio.
-    */
+    //Descripcion metodo: Metodo que lee archivo CSV, guardando los acopios en la base de datos.
     @Generated
     public void leerCSV(String direccion) {
         String texto = "";

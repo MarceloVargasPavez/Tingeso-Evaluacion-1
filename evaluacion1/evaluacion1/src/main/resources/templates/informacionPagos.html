@@ -1,69 +1,184 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ"
+      crossorigin="anonymous"
+    />
+    <style>
+      .informacion-pagos {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        background-color: rgb(24, 135, 160);
+      }
 
-<!--Titulo de la pagina.-->
-<title>Listado de Pagos</title>
+      .navbar-brand {
+        font-style: oblique;
+      }
 
-<!--Encabezado de la pagina.-->
-<h1>Listado de Pagos</h1>
+      #Actual {
+        color: rgb(78, 78, 214);
+      }
 
-<button type="button" th:action="@{/informacionPagos}" method="POST"
-<!--Tabla que muestra el listado de pagos.-->
-<table style="border-collapse: collapse;" border="1" cellpadding="20">
-    <thead>
-    <!--Fila para el encabezado de la tabla.-->
-    <tr>
-        <td>id</td>
-        <td>quincena</td>
-        <td>codigo proveedor</td>
-        <td>total kls leche</td>
-        <td>numero dias de envio</td>
-        <td>promedio diario kls leche</td>
-        <td>porcentaje variacion leche</td>
-        <td>porcentaje grasa</td>
-        <td>porcentaje variacion grasa</td>
-        <td>porcentaje solidos</td>
-        <td>porcentaje variacion solidos</td>
-        <td>pago leche</td>
-        <td>pago grasa</td>
-        <td>pago solidos</td>
-        <td>bonificacion frecuencia</td>
-        <td>descuento variacion leche</td>
-        <td>descuento variacion grasa</td>
-        <td>descuento variacion solidos</td>
-        <td>pago total</td>
-        <td>monto retencion</td>
-        <td>monto final</td>
-    </tr>
-    </thead>
-    <tbody>
-    <!--Ciclo para agregar filas para cada pago de la base de datos.-->
-    <tr th:each="pagos:${pagos}">
-        <td th:text="${pagos.id}"></td>
-        <td th:text="${pagos.quincena}"></td>
-        <td th:text="${pagos.codigo_proveedor}"></td>
-        <td th:text="${pagos.total_klsleche}"></td>
-        <td th:text="${pagos.getNumero_dias_envio()}"></td>
-        <td th:text="${pagos.promedio_diario_klsleche}"></td>
-        <td th:text="${pagos.porcentaje_variacion_leche}"></td>
-        <td th:text="${pagos.porcentaje_grasa}"></td>
-        <td th:text="${pagos.porcentaje_variacion_grasa}"></td>
-        <td th:text="${pagos.porcentaje_solidos}"></td>
-        <td th:text="${pagos.porcentaje_variacion_st}"></td>
-        <td th:text="${pagos.pago_leche}"></td>
-        <td th:text="${pagos.pago_grasa}"></td>
-        <td th:text="${pagos.pago_solidos}"></td>
-        <td th:text="${pagos.bonificacion_frecuencia}"></td>
-        <td th:text="${pagos.descuento_variacion_klsleche}"></td>
-        <td th:text="${pagos.descuento_variacion_grasa}"></td>
-        <td th:text="${pagos.descuento_variacion_st}"></td>
-        <td th:text="${pagos.pago_total}"></td>
-        <td th:text="${pagos.monto_retencion}"></td>
-        <td th:text="${pagos.monto_final}"></td>
-    </tr>
-    </tbody>
-</table>
+      .main-informacion-pagos {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
 
-<p><a href="/">Inicio</a>.</p>
+      .table {
+        width: 800px;
+      }
 
+      .table-primary{
+        font-size: 14px;
+      }
+    </style>
+    <title>Listado de Pagos</title>
+  </head>
+  <body class="informacion-pagos">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="/">MILKSTGO</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a
+                class="nav-link active"
+                aria-current="page"
+                href="/listar-proveedores"
+                >Listado Proveedores</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link active"
+                aria-current="page"
+                href="/nuevo-proveedor"
+                >Nuevo Proveedor</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link active"
+                aria-current="page"
+                href="/subirArchivoAcopio"
+                >Subir Archivo Acopio</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link active"
+                aria-current="page"
+                href="/subirArchivoPropiedades"
+                >Subir Archivo Propiedades</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link active"
+                aria-current="page"
+                href="/informacionAcopios"
+                >Informacion Acopios</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link active"
+                aria-current="page"
+                href="/informacionPropiedades"
+                >Informacion Propiedades</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link active"
+                aria-current="page"
+                id="Actual"
+                href="/informacionPagos"
+                >Informacion Pagos</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <main class="main-informacion-pagos">
+      <br>
+      <table class="table table-striped">
+        <thead>
+          <tr class="table-primary">
+            <td scope="col">ID</td>
+            <td scope="col">Quincena</td>
+            <td scope="col">Código Proveedor</td>
+            <td scope="col">Total Kls Leche</td>
+            <td scope="col">Número Días de Envío</td>
+            <td scope="col">Promedio Diario Kls Leche</td>
+            <td scope="col">Porcentaje Variación Leche</td>
+            <td scope="col">Porcentaje Grasa</td>
+            <td scope="col">Porcentaje Variación Grasa</td>
+            <td scope="col">Porcentaje Sólidos</td>
+            <td scope="col">Porcentaje Variación Sólidos</td>
+            <td scope="col">Pago Leche</td>
+            <td scope="col">Pago Grasa</td>
+            <td scope="col">Pago Sólidos</td>
+            <td scope="col">Bonificación frecuencia</td>
+            <td scope="col">Descuento Variación Leche</td>
+            <td scope="col">Descuento Variación Grasa</td>
+            <td scope="col">Descuento Variación Sólidos</td>
+            <td scope="col">Pago total</td>
+            <td scope="col">Monto Retención</td>
+            <td scope="col">Monto Final</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="table-primary" th:each="pagos:${pagos}">
+            <td scope="col" th:text="${pagos.id}"></td>
+            <td scope="col" th:text="${pagos.quincena}"></td>
+            <td scope="col" th:text="${pagos.codigo_proveedor}"></td>
+            <td scope="col" th:text="${pagos.total_klsleche}"></td>
+            <td scope="col" th:text="${pagos.getNumero_dias_envio()}"></td>
+            <td scope="col" th:text="${pagos.promedio_diario_klsleche}"></td>
+            <td scope="col" th:text="${pagos.porcentaje_variacion_leche}"></td>
+            <td scope="col" th:text="${pagos.porcentaje_grasa}"></td>
+            <td scope="col" th:text="${pagos.porcentaje_variacion_grasa}"></td>
+            <td scope="col" th:text="${pagos.porcentaje_solidos}"></td>
+            <td scope="col" th:text="${pagos.porcentaje_variacion_st}"></td>
+            <td scope="col" th:text="${pagos.pago_leche}"></td>
+            <td scope="col" th:text="${pagos.pago_grasa}"></td>
+            <td scope="col" th:text="${pagos.pago_solidos}"></td>
+            <td scope="col" th:text="${pagos.bonificacion_frecuencia}"></td>
+            <td scope="col" th:text="${pagos.descuento_variacion_klsleche}"></td>
+            <td scope="col" th:text="${pagos.descuento_variacion_grasa}"></td>
+            <td scope="col" th:text="${pagos.descuento_variacion_st}"></td>
+            <td scope="col" th:text="${pagos.pago_total}"></td>
+            <td scope="col" th:text="${pagos.monto_retencion}"></td>
+            <td scope="col" th:text="${pagos.monto_final}"></td>
+          </tr>
+        </tbody>
+      </table>
+    </main>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+      crossorigin="anonymous"
+    ></script>
+  </body>
 </html>
