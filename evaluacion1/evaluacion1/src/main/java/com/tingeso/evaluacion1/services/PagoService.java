@@ -121,8 +121,8 @@ public class PagoService {
         int pago_total = (int) pagoTotal(pago_acopio_leche, descuentos);
         nuevo_pago.setPago_total(pago_total);
 
-        if (Objects.equals(proveedor_actual.getRetencion(), "SI")) {
-            nuevo_pago.setMonto_retencion(950000);
+        if (Objects.equals(proveedor_actual.getRetencion(), "SI") && nuevo_pago.getPago_total() > 950000) {
+            nuevo_pago.setMonto_retencion((pago_total * 13) / 100);
         } else {
             nuevo_pago.setMonto_retencion(0);
         }
