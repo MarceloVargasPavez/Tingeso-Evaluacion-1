@@ -28,7 +28,7 @@ public class PropiedadesLecheController {
     public String subirPropiedades(@RequestParam("file")MultipartFile file, RedirectAttributes redirectAttributes){
         propiedadesLecheService.guardarArchivoPropiedades(file);
         redirectAttributes.addFlashAttribute("mensaje", "Archivo cargado!");
-        propiedadesLecheService.leerCSVPropiedades("Propiedades.csv");
+        propiedadesLecheService.leerCSVPropiedades(file.getOriginalFilename());
         return "redirect:/subirArchivoPropiedades";
     }
 

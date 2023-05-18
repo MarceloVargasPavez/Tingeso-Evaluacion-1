@@ -37,7 +37,7 @@
       }
 
       .table-primary{
-        font-size: 14px;
+        font-size: 12px;
       }
     </style>
     <title>Listado de Pagos</title>
@@ -125,52 +125,54 @@
       <table class="table table-striped">
         <thead>
           <tr class="table-primary">
-            <td scope="col">ID</td>
-            <td scope="col">Quincena</td>
-            <td scope="col">Código Proveedor</td>
-            <td scope="col">Total Kls Leche</td>
-            <td scope="col">Número Días de Envío</td>
-            <td scope="col">Promedio Diario Kls Leche</td>
-            <td scope="col">Porcentaje Variación Leche</td>
-            <td scope="col">Porcentaje Grasa</td>
-            <td scope="col">Porcentaje Variación Grasa</td>
-            <td scope="col">Porcentaje Sólidos</td>
-            <td scope="col">Porcentaje Variación Sólidos</td>
-            <td scope="col">Pago Leche</td>
-            <td scope="col">Pago Grasa</td>
-            <td scope="col">Pago Sólidos</td>
-            <td scope="col">Bonificación frecuencia</td>
-            <td scope="col">Descuento Variación Leche</td>
-            <td scope="col">Descuento Variación Grasa</td>
-            <td scope="col">Descuento Variación Sólidos</td>
-            <td scope="col">Pago total</td>
-            <td scope="col">Monto Retención</td>
-            <td scope="col">Monto Final</td>
+            <td>ID</td>
+            <td>Quincena</td>
+            <td>Código Proveedor</td>
+            <td>Nombre Proveedor</td>
+            <td>Total Kls Leche</td>
+            <td>Número Días de Envío</td>
+            <td>Promedio Diario Kls Leche</td>
+            <td>Porcentaje Variación Leche</td>
+            <td>Porcentaje Grasa</td>
+            <td>Porcentaje Variación Grasa</td>
+            <td>Porcentaje Sólidos</td>
+            <td>Porcentaje Variación Sólidos</td>
+            <td>Pago Leche</td>
+            <td>Pago Grasa</td>
+            <td>Pago Sólidos</td>
+            <td>Bonificación frecuencia</td>
+            <td>Descuento Variación Leche</td>
+            <td>Descuento Variación Grasa</td>
+            <td>Descuento Variación Sólidos</td>
+            <td>Pago total</td>
+            <td>Monto Retención</td>
+            <td>Monto Final</td>
           </tr>
         </thead>
         <tbody>
           <tr class="table-primary" th:each="pagos:${pagos}">
-            <td scope="col" th:text="${pagos.id}"></td>
-            <td scope="col" th:text="${pagos.quincena}"></td>
-            <td scope="col" th:text="${pagos.codigo_proveedor}"></td>
-            <td scope="col" th:text="${pagos.total_klsleche}"></td>
-            <td scope="col" th:text="${pagos.getNumero_dias_envio()}"></td>
-            <td scope="col" th:text="${pagos.promedio_diario_klsleche}"></td>
-            <td scope="col" th:text="${pagos.porcentaje_variacion_leche}"></td>
-            <td scope="col" th:text="${pagos.porcentaje_grasa}"></td>
-            <td scope="col" th:text="${pagos.porcentaje_variacion_grasa}"></td>
-            <td scope="col" th:text="${pagos.porcentaje_solidos}"></td>
-            <td scope="col" th:text="${pagos.porcentaje_variacion_st}"></td>
-            <td scope="col" th:text="${pagos.pago_leche}"></td>
-            <td scope="col" th:text="${pagos.pago_grasa}"></td>
-            <td scope="col" th:text="${pagos.pago_solidos}"></td>
-            <td scope="col" th:text="${pagos.bonificacion_frecuencia}"></td>
-            <td scope="col" th:text="${pagos.descuento_variacion_klsleche}"></td>
-            <td scope="col" th:text="${pagos.descuento_variacion_grasa}"></td>
-            <td scope="col" th:text="${pagos.descuento_variacion_st}"></td>
-            <td scope="col" th:text="${pagos.pago_total}"></td>
-            <td scope="col" th:text="${pagos.monto_retencion}"></td>
-            <td scope="col" th:text="${pagos.monto_final}"></td>
+            <td th:text="${pagos.id}"></td>
+            <td th:text="${pagos.quincena}"></td>
+            <td th:text="${pagos.codigo_proveedor}"></td>
+            <td th:text="${pagos.nombre_proveedor}"></td>
+            <td th:text="${pagos.total_klsleche}"></td>
+            <td th:text="${pagos.getNumero_dias_envio()}"></td>
+            <td th:text="${pagos.promedio_diario_klsleche}"></td>
+            <td th:text="${pagos.porcentaje_variacion_leche}"></td>
+            <td th:text="${pagos.porcentaje_grasa}"></td>
+            <td th:text="${pagos.porcentaje_variacion_grasa}"></td>
+            <td th:text="${pagos.porcentaje_solidos}"></td>
+            <td th:text="${pagos.porcentaje_variacion_st}"></td>
+            <td th:text="${pagos.pago_leche}"></td>
+            <td th:text="${pagos.pago_grasa}"></td>
+            <td th:text="${pagos.pago_solidos}"></td>
+            <td th:text="${pagos.bonificacion_frecuencia}"></td>
+            <td th:text="${pagos.descuento_variacion_klsleche}"></td>
+            <td th:text="${pagos.descuento_variacion_grasa}"></td>
+            <td th:text="${pagos.descuento_variacion_st}"></td>
+            <td th:text="${pagos.pago_total}"></td>
+            <td th:text="${pagos.monto_retencion}"></td>
+            <td th:text="${pagos.monto_final}"></td>
           </tr>
         </tbody>
       </table>
