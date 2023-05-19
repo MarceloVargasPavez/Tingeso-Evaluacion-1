@@ -18,6 +18,10 @@
         background-color: rgb(24, 135, 160);
       }
 
+      nav{
+        margin-bottom: 30px;
+      }
+
       .navbar-brand {
         font-style: oblique;
       }
@@ -121,20 +125,20 @@
       <table class="table table-striped">
         <thead>
           <tr class="table-primary">
-            <td scope="col">ID</td>
-            <td scope="col">Fecha</td>
-            <td scope="col">Turno</td>
-            <td scope="col">Código Proveedor</td>
-            <td scope="col">Kilos Leche</td>
+            <td>ID</td>
+            <td>Fecha</td>
+            <td>Turno</td>
+            <td>Código Proveedor</td>
+            <td>Kilos Leche</td>
           </tr>
         </thead>
         <tbody>
           <tr class="table-primary" th:each="acopios:${acopios}">
-            <td scope="col" th:text="${acopios.id}"></td>
-            <td scope="col" th:text="${acopios.fecha}"></td>
-            <td scope="col" th:text="${acopios.turno}"></td>
-            <td scope="col" th:text="${acopios.codigo_proveedor}"></td>
-            <td scope="col" th:text="${acopios.kilos_leche}"></td>
+            <td th:text="${acopios.id}"></td>
+            <td th:text="${acopios.fecha}"></td>
+            <td th:text="${acopios.turno}"></td>
+            <td th:text="${acopios.codigo_proveedor}"></td>
+            <td th:text="${acopios.kilos_leche}"></td>
           </tr>
         </tbody>
       </table>

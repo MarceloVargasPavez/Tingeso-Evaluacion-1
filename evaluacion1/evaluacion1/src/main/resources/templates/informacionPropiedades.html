@@ -18,6 +18,10 @@
         background-color: rgb(24, 135, 160);
       }
 
+      nav{
+        margin-bottom: 30px;
+      }
+
       .navbar-brand {
         font-style: oblique;
       }
@@ -121,18 +125,18 @@
       <table class="table table-striped">
         <thead>
           <tr class="table-primary">
-            <td scope="col">ID</td>
-            <td scope="col">Código Proveedor</td>
-            <td scope="col">Porcentaje Sólidos</td>
-            <td scope="col">Porcentaje Grasa</td>
+            <td>ID</td>
+            <td>Código Proveedor</td>
+            <td>Porcentaje Sólidos</td>
+            <td>Porcentaje Grasa</td>
           </tr>
         </thead>
         <tbody>
           <tr class="table-primary" th:each="propiedades:${propiedades}">
-            <td scope="col" th:text="${propiedades.id}"></td>
-            <td scope="col" th:text="${propiedades.codigo_proveedor}"></td>
-            <td scope="col" th:text="${propiedades.porcentaje_solidos}"></td>
-            <td scope="col" th:text="${propiedades.porcentaje_grasa}"></td>
+            <td th:text="${propiedades.id}"></td>
+            <td th:text="${propiedades.codigo_proveedor}"></td>
+            <td th:text="${propiedades.porcentaje_solidos}"></td>
+            <td th:text="${propiedades.porcentaje_grasa}"></td>
           </tr>
         </tbody>
       </table>

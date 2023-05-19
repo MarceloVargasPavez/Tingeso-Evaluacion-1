@@ -10,13 +10,16 @@
       integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ"
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="../static/css/style.css" />
     <style>
       .informacion-proveedores {
         display: flex;
         flex-direction: column;
         height: 100vh;
         background-color: rgb(24, 135, 160);
+      }
+
+      nav{
+        margin-bottom: 30px;
       }
 
       .navbar-brand {
@@ -122,18 +125,18 @@
       <table class="table table-striped">
         <thead>
           <tr class="table-primary">
-            <td scope="col">Código</td>
-            <td scope="col">Nombre</td>
-            <td scope="col">Categoría</td>
-            <td scope="col">Retención</td>
+            <td>Código</td>
+            <td>Nombre</td>
+            <td>Categoría</td>
+            <td>Retención</td>
           </tr>
         </thead>
         <tbody>
           <tr class="table-primary" th:each="proveedores:${proveedores}">
-            <td scope="col" th:text="${proveedores.codigo}"></td>
-            <td scope="col" th:text="${proveedores.nombre}"></td>
-            <td scope="col" th:text="${proveedores.categoria}"></td>
-            <td scope="col" th:text="${proveedores.retencion}"></td>
+            <td th:text="${proveedores.codigo}"></td>
+            <td th:text="${proveedores.nombre}"></td>
+            <td th:text="${proveedores.categoria}"></td>
+            <td th:text="${proveedores.retencion}"></td>
           </tr>
         </tbody>
       </table>
